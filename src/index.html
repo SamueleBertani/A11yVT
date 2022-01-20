@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEMO - Virtual tour accessibile</title>
+</head>
+<body>
+
+    <canvas aria-label="Un immagine raffigurante un incrocio a Venezia" class="webgl"></canvas>
+
+    <div class="loading-bar"></div>
+
+    <div class="point point-0">
+        <h2 class="label">1</h2>
+        <p class="text">La pavimentazione della via risale al 1500 e è fatta di pietra</p>
+    </div>
+    <div class="point point-1">
+        <h2 class="label">2</h2>
+        <p class="text">L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena</p>
+    </div>
+    <div class="point point-2">
+        <h2 class="label">3</h2>
+        <p class="text">L'intera via è percorribile fino alla laguna dove si può prendere il traghetto</p>
+    </div>
+    <div id="change" class="sr-only" aria-label="Paragrafo di aggiornamento"  aria-live="polite">
+        Funzioni utili:
+        Usa le freccette per spostarti da un infopoit ad un altro.
+        Passa su un infopoint per avere maggiori informazioni.
+        Tutte le informazioni degli infopoint sono leggibili dalla pagina web.
+        Premi spazio per notificare gli infopoint presenti a schermo.
+    </div>
+</body>
+</html>
