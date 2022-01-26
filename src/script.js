@@ -82,9 +82,9 @@ const scene = new THREE.Scene()
 
 
 /**
- * Environment map
+ * Environment map  
  */
-const environmentMap = cubeTextureLoader.load([
+const environmentMap = cubeTextureLoader.load([ 
     '/textures/environmentMaps/0/px.jpg',
     '/textures/environmentMaps/0/nx.jpg',
     '/textures/environmentMaps/0/py.jpg',
@@ -104,7 +104,10 @@ scene.environment = environmentMap
 /**
  * Points of interest
  */
-const points = [
+const points = createPoint([{position: new THREE.Vector3(3, 0, 0), description: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
+                            {position: new THREE.Vector3(3, 0, 3), description: "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
+                            {position: new THREE.Vector3(0, 0, 3), description: "L'intera via è percorribile fino alla laguna dove si può prendere il traghetto"},
+                            {position: new THREE.Vector3(1, 1, 1), description: "ciao"}]) /*[
     {
         position: new THREE.Vector3(3, 0, 0),
         element: document.querySelector('.point-0')
@@ -117,9 +120,45 @@ const points = [
         position: new THREE.Vector3(0, 0, 3),
         element: document.querySelector('.point-2')
     }
-]
+]*/
 
+//date le coordinate crea i punti di interesse
+function createPoint(array){
+    var points2 = []
+    var i = 0
+    while (i<array.length){
+        var posizione = array[i].position
+        var descrizione = array[i].description
+        var singlePoint = {position: posizione, description: descrizione}
+        points2.push(singlePoint)
+        i = i+1
+    }
+    console.log(points2)
+    return points2
+}
 
+setInterestPoints(points)
+//setta i paragrafi per i punti di interesse
+function setInterestPoints(array){
+    var i = 0
+    var parentNode = document.getElementById("pointOfInterest")
+    while (i<array.length){
+        var div = document.createElement('div')
+        div.setAttribute('class', 'point point-'+i)
+        parentNode.appendChild(div)
+        var titolo = document.createElement('h2')
+        titolo.setAttribute("class", "label")
+        titolo.innerHTML = i+1
+        div.appendChild(titolo)
+        var paragrafo = document.createElement('p')
+        paragrafo.setAttribute("class", "text")
+        paragrafo.innerHTML = array[i].description
+        div.appendChild(paragrafo)
+        points[i].element = document.querySelector('.point-'+i)
+        i = i+1
+    }
+    console.log('ciao')
+}
 
 document.addEventListener("keydown", onDocumentKeyDown, false);
 function onDocumentKeyDown(event) {
@@ -130,9 +169,9 @@ function onDocumentKeyDown(event) {
         nextPointArrow()
     } else if (keyCode == 37) {
         previusPointArrow()
-    } else if (keyCode == 32) {
+    } else if (keyCode == 32) { //space
         showPointInCamera()
-    } else if (keyCode == 82) {
+    } else if (keyCode == 82) { //r
         resetCameraToNord()
     } 
 }
@@ -159,7 +198,7 @@ function previusPointArrow() {
     changingPoint = true
 }
 
-function showPointInCamera(){
+function showPointInCamera(){           
     let cont1 = 0
     let fraseFinale1 = ""
     for (const point of points) {
@@ -271,10 +310,10 @@ window.addEventListener('resize', () => {
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.set(0, 0, 0.1)
 scene.add(camera)
-const targetOrientation = camera.quaternion.clone();
+const targetOrientation = camera.quaternion.clone();    
 
-// Controls
-const controls = new OrbitControls(camera, canvas)
+// Controls                                            
+var controls = new OrbitControls(camera, canvas)
 controls.enableDamping = true
 controls.rotateSpeed *= -0.7
 
@@ -295,6 +334,7 @@ renderer.toneMappingExposure = 3
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 
+var firsttouch = true
 /**
  * Animate
  */
@@ -322,16 +362,29 @@ const tick = () => {
             z: endRotation.z,
         })*/
         camera.lookAt(points[focusedPoint].position)
+        
+        //camera.localToWorld(points[focusedPoint].position)
+        //controls.object(camera)
+        controls.saveState()
+        console.log()
+        //controls=new OrbitControls(camera, canvas)
+        changingPoint=false
+        firsttouch = false
    // else if (){
    //     camera.lookAt(new Vector3(0,1,0))
     } else {
-
-        controls.update()
+        if (firsttouch){
+            controls.update()
+        }
+        else{
+            //camera.position.set (0,0,0.1)
+            
+        }
     }
 
 
     // Update points only when the scene is ready
-    if (sceneReady) {
+    if (sceneReady) {                   
         camera.updateMatrix();
         camera.updateMatrixWorld();
         var frustum = new THREE.Frustum();
