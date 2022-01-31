@@ -104,7 +104,9 @@ scene.environment = environmentMap
 /**
  * Points of interest
  */
-const points = createPoint([{position: new THREE.Vector3(3, 0, 0), description: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
+const points = createPoint([3, 12, ["a", "b", "c", "d"]])
+// y=altezze
+/*const points = createPoint([{position: new THREE.Vector3(3, 0, 0), description: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
                             {position: new THREE.Vector3(3, 0, 3), description: "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
                             {position: new THREE.Vector3(0, 0, 3), description: "L'intera via è percorribile fino alla laguna dove si può prendere il traghetto"},
                             {position: new THREE.Vector3(1, 1, 1), description: "ciao"}]) /*[
@@ -126,12 +128,36 @@ const points = createPoint([{position: new THREE.Vector3(3, 0, 0), description: 
 function createPoint(array){
     var points2 = []
     var i = 0
-    while (i<array.length){
-        var posizione = array[i].position
-        var descrizione = array[i].description
-        var singlePoint = {position: posizione, description: descrizione}
-        points2.push(singlePoint)
-        i = i+1
+    var x = 1
+    var l = 0
+    while (i<array[0]*array[1]-1){
+        var k = 0
+        while (k<array[1]){
+            if (array[2][i]){
+                var descrizione = (array[2])[i]
+            }
+            else {
+                var descrizione = "/"
+            }
+            var z = (Math.pow(-1,k))*(Math.trunc((k+1)/2))
+            /*if (z>=0){
+                x=1
+            }
+            else{
+                x=-1
+            }*/
+            var y = l
+            var singlePoint = {position: new THREE.Vector3(x,y,z), description: descrizione}
+            points2.push(singlePoint)
+            i = i+1
+            k = k+1
+        }
+        if (l<=0){
+            l = 1-l
+        }
+        else {
+            l = -l
+        } 
     }
     console.log(points2)
     return points2
@@ -148,16 +174,17 @@ function setInterestPoints(array){
         parentNode.appendChild(div)
         var titolo = document.createElement('h2')
         titolo.setAttribute("class", "label")
+        titolo.setAttribute('aria-describedby', 'pointDescription-'+i)
         titolo.innerHTML = i+1
         div.appendChild(titolo)
         var paragrafo = document.createElement('p')
         paragrafo.setAttribute("class", "text")
+        paragrafo.setAttribute('id', 'pointDescription-'+i)
         paragrafo.innerHTML = array[i].description
         div.appendChild(paragrafo)
         points[i].element = document.querySelector('.point-'+i)
         i = i+1
     }
-    console.log('ciao')
 }
 
 document.addEventListener("keydown", onDocumentKeyDown, false);
