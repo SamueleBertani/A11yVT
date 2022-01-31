@@ -104,7 +104,7 @@ scene.environment = environmentMap
 /**
  * Points of interest
  */
-const points = createPoint([3, 12, ["a", "b", "c", "d"]])
+const points = createPoint({height:3, width:12, descriptions:["a", "b", "c", "d"]})
 // y=altezze
 /*const points = createPoint([{position: new THREE.Vector3(3, 0, 0), description: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
                             {position: new THREE.Vector3(3, 0, 3), description: "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
@@ -125,16 +125,16 @@ const points = createPoint([3, 12, ["a", "b", "c", "d"]])
 ]*/
 
 //date le coordinate crea i punti di interesse
-function createPoint(array){
+function createPoint(obj){
     var points2 = []
     var i = 0
     var x = 1
     var l = 0
-    while (i<array[0]*array[1]-1){
+    while (i<obj.height*obj.width-1){
         var k = 0
-        while (k<array[1]){
-            if (array[2][i]){
-                var descrizione = (array[2])[i]
+        while (k<obj.width){
+            if (obj.descriptions[i]){
+                var descrizione = (obj.descriptions)[i]
             }
             else {
                 var descrizione = "/"
@@ -147,7 +147,12 @@ function createPoint(array){
                 x=-1
             }*/
             var y = l
-            var singlePoint = {position: new THREE.Vector3(x,y,z), description: descrizione}
+            var singlePoint = {position: (new THREE.Vector3(x,y,z)).setLength(3), description: descrizione}
+            //singlePoint.position = new THREE.Vector3(0,0,0.1).applyAxisAngle(singlePoint.position, k*Math.PI/obj.width).setLength(3)
+            singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, k*Math.PI*2/obj.width, y).setLength(3)
+            
+            //console.log((new THREE.Vector3(0,0,0)).distanceTo(singlePoint.position))
+            console.log((new THREE.Vector3(0,0,0.1)).angleTo(singlePoint.position))
             points2.push(singlePoint)
             i = i+1
             k = k+1
@@ -157,8 +162,10 @@ function createPoint(array){
         }
         else {
             l = -l
-        } 
+        }
     }
+    console.log(points2[0].position.distanceTo(points2[1].position))
+    console.log(points2[0].position.distanceTo(points2[2].position))
     console.log(points2)
     return points2
 }
