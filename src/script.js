@@ -100,11 +100,18 @@ scene.environment = environmentMap
 
 //debugObject.envMapIntensity = 5
 
-
+/**
+ * Descrizioni
+ */
+const descrizioni = [
+    {altezza: 1, larghezza: 3, descr: "a"},
+    {altezza: 0, larghezza: 7, descr: "b"},
+    {altezza: -1, larghezza: 5, descr: "c"}
+]
 /**
  * Points of interest
  */
-const points = createPoint({height:3, width:12, descriptions:["a", "b", "c", "d"]})
+const points = createPoint({height:3, width:12, descriptions: descrizioni/*["", "a", "b", "c", "d"]*/})
 // y=altezze
 /*const points = createPoint([{position: new THREE.Vector3(3, 0, 0), description: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
                             {position: new THREE.Vector3(3, 0, 3), description: "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
@@ -128,31 +135,28 @@ const points = createPoint({height:3, width:12, descriptions:["a", "b", "c", "d"
 function createPoint(obj){
     var points2 = []
     var i = 0
-    var x = 1
     var l = 0
     while (i<obj.height*obj.width-1){
         var k = 0
         while (k<obj.width){
-            if (obj.descriptions[i]){
-                var descrizione = (obj.descriptions)[i]
-            }
-            else {
-                var descrizione = "/"
-            }
-            var z = (Math.pow(-1,k))*(Math.trunc((k+1)/2))
-            /*if (z>=0){
-                x=1
-            }
-            else{
-                x=-1
-            }*/
             var y = l
-            var singlePoint = {position: (new THREE.Vector3(x,y,z)).setLength(3), description: descrizione}
-            //singlePoint.position = new THREE.Vector3(0,0,0.1).applyAxisAngle(singlePoint.position, k*Math.PI/obj.width).setLength(3)
-            singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, k*Math.PI*2/obj.width, y).setLength(3)
-            
-            //console.log((new THREE.Vector3(0,0,0)).distanceTo(singlePoint.position))
-            console.log((new THREE.Vector3(0,0,0.1)).angleTo(singlePoint.position))
+            var singlePoint = {description: ""}
+            singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -k*Math.PI*2/obj.width, y)
+            singlePoint.height = y
+            singlePoint.width = k
+            var s = 0
+            while (s<obj.descriptions.length){
+                if ((obj.descriptions[s].altezza==singlePoint.height)&&(obj.descriptions[s].larghezza==singlePoint.width+1)){
+                    singlePoint.description = obj.descriptions[s].descr
+                    s = obj.descriptions.length
+                }
+                else {
+                    s++
+                }
+            }
+            if (!singlePoint.description){
+                singlePoint.description = "/"
+            }
             points2.push(singlePoint)
             i = i+1
             k = k+1
@@ -164,8 +168,6 @@ function createPoint(obj){
             l = -l
         }
     }
-    console.log(points2[0].position.distanceTo(points2[1].position))
-    console.log(points2[0].position.distanceTo(points2[2].position))
     console.log(points2)
     return points2
 }
@@ -189,6 +191,10 @@ function setInterestPoints(array){
         paragrafo.setAttribute('id', 'pointDescription-'+i)
         paragrafo.innerHTML = array[i].description
         div.appendChild(paragrafo)
+        //togli il commento per nascondere i punti vuoti
+        /*if (paragrafo.innerHTML=="/"){
+            div.style.display="none"
+        }*/
         points[i].element = document.querySelector('.point-'+i)
         i = i+1
     }
@@ -203,6 +209,10 @@ function onDocumentKeyDown(event) {
         nextPointArrow()
     } else if (keyCode == 37) {
         previusPointArrow()
+    } else if (keyCode == 38){  //freccia su
+        pointUpArrow()
+    } else if (keyCode == 40){  //freccia giù
+        pointDownArrow()
     } else if (keyCode == 32) { //space
         showPointInCamera()
     } else if (keyCode == 82) { //r
@@ -231,7 +241,64 @@ function previusPointArrow() {
     updateChangeDiv(focusedPoint)
     changingPoint = true
 }
-
+function pointUpArrow(){
+    if (focusedPoint==-1){
+        focusedPoint++
+    }
+    let height = points[focusedPoint].height
+    let maxHeight = getMaxHeight(points)
+    let width = points[focusedPoint].width 
+    focusedPoint = 0
+    if (height>=maxHeight){
+        console.log("sei in cima")
+    }
+    else{
+        while (points[focusedPoint].height<=height){
+            focusedPoint++
+        }
+        focusedPoint = focusedPoint + width
+    }
+    updateChangeDiv(focusedPoint)
+    changingPoint = true
+}
+function pointDownArrow(){
+    if (focusedPoint==-1){
+        focusedPoint++
+    }
+    let height = points[focusedPoint].height
+    let minHeight = getMinHeight(points)
+    let width = points[focusedPoint].width 
+    focusedPoint = 0
+    if (height<=minHeight){
+        console.log("sei in fondo")
+    }
+    else{
+        while (points[focusedPoint].height>=height){
+            focusedPoint++
+        }
+        focusedPoint = focusedPoint + width
+    }
+    updateChangeDiv(focusedPoint)
+    changingPoint = true
+}
+function getMaxHeight(array){
+    let max = 0
+    array.forEach( (element) => {
+        if (element.height > max){
+            max = element.height
+        }
+    })
+    return max
+}
+function getMinHeight(array){
+    let min = 0
+    array.forEach( (element) => {
+        if (element.height < min){
+            min = element.height
+        }
+    })
+    return min
+}
 function showPointInCamera(){           
     let cont1 = 0
     let fraseFinale1 = ""
