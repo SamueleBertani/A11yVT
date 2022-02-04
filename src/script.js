@@ -253,16 +253,17 @@ function pointUpArrow(){
         focusedPoint++
     }
     //cerca l'altezza e la larghezza del punto corrente, oltre all'altezza massima raggiungibile
-    let height = points[focusedPoint].height
+    let currentHeight = points[focusedPoint].height
     let maxHeight = getMaxHeight(points)
     let width = points[focusedPoint].width 
-    if (height>=maxHeight){
+    if (currentHeight>=maxHeight){
         console.log("sei in cima")
     }
     else{
         focusedPoint = 0
+        let nextHeight = currentHeight+1
         //finchè l'altezza non aumenta
-        while (points[focusedPoint].height<=height){
+        while (points[focusedPoint].height!=nextHeight){
             focusedPoint++
         }
         //calcola la larghezza del nuovo punto focalizzato
@@ -276,15 +277,16 @@ function pointDownArrow(){
     if (focusedPoint==-1){
         focusedPoint++
     }
-    let height = points[focusedPoint].height
+    let currentHeight = points[focusedPoint].height
     let minHeight = getMinHeight(points)
     let width = points[focusedPoint].width 
-    if (height<=minHeight){
+    if (currentHeight<=minHeight){
         console.log("sei in fondo")
     }
     else{
         focusedPoint = 0
-        while (points[focusedPoint].height>=height){
+        let previousHeight = currentHeight-1
+        while (points[focusedPoint].height!=previousHeight){
             focusedPoint++
         }
         focusedPoint = focusedPoint + width
