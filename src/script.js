@@ -112,26 +112,7 @@ const descrizioni = [
  * Points of interest, prende in input quante altezze considerare e quante larghezze per trovare quanti punti sono (altezza*larghezza) e come sono distribuiti sulla mappa
  */
 const points = createPoint({height:3, width:12, descriptions: descrizioni})
-// y=altezze
-/*const points = createPoint([{position: new THREE.Vector3(3, 0, 0), description: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
-                            {position: new THREE.Vector3(3, 0, 3), description: "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
-                            {position: new THREE.Vector3(0, 0, 3), description: "L'intera via è percorribile fino alla laguna dove si può prendere il traghetto"},
-                            {position: new THREE.Vector3(1, 1, 1), description: "ciao"}]) /*[
-    {
-        position: new THREE.Vector3(3, 0, 0),
-        element: document.querySelector('.point-0')
-    },
-    {
-        position: new THREE.Vector3(3, 0, 3),
-        element: document.querySelector('.point-1')
-    },
-    {
-        position: new THREE.Vector3(0, 0, 3),
-        element: document.querySelector('.point-2')
-    }
-]*/
 
-//date le coordinate crea i punti di interesse
 function createPoint(obj){
     var points2 = []
     var i = 0   //per i punti totali
@@ -194,14 +175,17 @@ function setInterestPoints(array){
         paragrafo.setAttribute("class", "text")
         paragrafo.innerHTML = array[i].description
         div.appendChild(paragrafo)
+
         //per l'accessibilità, da aggiustare
         paragrafo.setAttribute('aria-describedby', 'pointDescription-'+i)
         titolo.setAttribute('id', 'pointDescription-'+i)
+
         //togli il commento per nascondere i punti vuoti
         if (paragrafo.innerHTML=="Punto vuoto"){
             paragrafo.style.display="none"
             titolo.style.display="none"
         }
+
         div.setAttribute('aria-label',"Altezza: "+array[i].height+" Ore: "+ (array[i].width+1))
         //una volta creato il punto viene associato al relativo elemento di points
         points[i].element = document.querySelector('.point-'+i)
@@ -316,9 +300,11 @@ function getMinHeight(array){
     })
     return min
 }
+
 function showPointInCamera(){           
     let cont1 = 0
     let fraseFinale1 = ""
+    
     for (const point of points) {
         cont1++
         if (Array.from(point.element.classList).includes("visible") == true ){
@@ -355,7 +341,7 @@ for (const point of points) {
 
     point.element.addEventListener("mouseover", onOverOnPoint)
 
-    function onOverOnPoint(event) {
+    function onOverOnPoint() {
         updateChangeDiv(num)
     }
 
@@ -372,7 +358,7 @@ function updateChangeDiv(nParagrafo) {
     let fraseZ = points[nParagrafo].position.z > 0 ? " est" : " ovest"
 
     let fraseCompleta = frase1 + (nParagrafo + 1).toString() + frase2 + fraseX + fraseZ + fraseY
-    document.getElementById("change").ariaLabel = fraseCompleta
+    //document.getElementById("change").ariaLabel = fraseCompleta
 }
 
 function resetCameraToNord(){
@@ -429,7 +415,7 @@ window.addEventListener('resize', () => {
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.set(0, 0, 0.1)
 scene.add(camera)
-const targetOrientation = camera.quaternion.clone();    
+  
 
 // Controls                                            
 var controls = new OrbitControls(camera, canvas)
@@ -485,7 +471,6 @@ const tick = () => {
         //camera.localToWorld(points[focusedPoint].position)
         //controls.object(camera)
         controls.saveState()
-        console.log()
         //controls=new OrbitControls(camera, canvas)
         changingPoint=false
         firsttouch = false
@@ -520,7 +505,6 @@ const tick = () => {
                 const screenPosition = point.position.clone()
                 screenPosition.project(camera)
 
-                point.element.classList.add('visible')
                 point.element.classList.add('visible')
 
                 const translateX = screenPosition.x * sizes.width * 0.5
