@@ -194,7 +194,6 @@ function setInterestPoints(array){
         paragrafo.setAttribute("class", "text")
         paragrafo.innerHTML = array[i].description
         div.appendChild(paragrafo)
-        titolo.setAttribute('aria-label', "Altezza: "+array[i].height+" Larghezza: "+ (array[i].width+1))
         //per l'accessibilità, da aggiustare
         paragrafo.setAttribute('aria-describedby', 'pointDescription-'+i)
         titolo.setAttribute('id', 'pointDescription-'+i)
@@ -202,8 +201,8 @@ function setInterestPoints(array){
         if (paragrafo.innerHTML=="Punto vuoto"){
             paragrafo.style.display="none"
             titolo.style.display="none"
-            div.setAttribute('aria-label', "Punto: "+(i+1)+" Altezza: "+array[i].height+" Larghezza: "+ (array[i].width+1))
         }
+        div.setAttribute('aria-label',"Altezza: "+array[i].height+" Ore: "+ (array[i].width+1))
         //una volta creato il punto viene associato al relativo elemento di points
         points[i].element = document.querySelector('.point-'+i)
         i = i+1
@@ -324,8 +323,8 @@ function showPointInCamera(){
         cont1++
         if (Array.from(point.element.classList).includes("visible") == true ){
             const fras1 = "Paragrafo "
-            const fras2 = " visibile all'altezza"
-            const fras3 = " ed alla larghezza"
+            const fras2 = " visibile all'altezza "
+            const fras3 = " ed alla larghezza "
             //const temp = getTranslateXY(point.element)
             let fraseX2D = point.height//temp.translateX > 0 ? " a destra" : " a sinistra"
             let fraseY2D = point.width//temp.translateY > 0 ? " in basso" : " in alto" 
