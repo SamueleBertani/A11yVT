@@ -324,12 +324,13 @@ function showPointInCamera(){
         cont1++
         if (Array.from(point.element.classList).includes("visible") == true ){
             const fras1 = "Paragrafo "
-            const fras2 = " visibile nell'area"
-            const temp = getTranslateXY(point.element)
-            let fraseX2D = temp.translateX > 0 ? " a destra" : " a sinistra"
-            let fraseY2D = temp.translateY > 0 ? " in basso" : " in alto" 
+            const fras2 = " visibile all'altezza"
+            const fras3 = " ed alla larghezza"
+            //const temp = getTranslateXY(point.element)
+            let fraseX2D = point.height//temp.translateX > 0 ? " a destra" : " a sinistra"
+            let fraseY2D = point.width//temp.translateY > 0 ? " in basso" : " in alto" 
 
-            fraseFinale1 += fras1 + cont1.toString() + fras2 + fraseX2D + fraseY2D + " "
+            fraseFinale1 += fras1 + cont1.toString() + fras2 + fraseX2D + fras3 + fraseY2D + " "
         }
     }
     if (fraseFinale1 != ""){
