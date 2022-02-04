@@ -104,9 +104,9 @@ scene.environment = environmentMap
  * Descrizioni con relativa altezza e "larghezza"
  */
 const descrizioni = [
-    {altezza: 1, larghezza: 3, descr: "a"},
-    {altezza: 0, larghezza: 7, descr: "b"},
-    {altezza: -1, larghezza: 5, descr: "c"}
+    {altezza: 1, larghezza: 3, descr: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
+    {altezza: 0, larghezza: 7, descr: "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
+    {altezza: -1, larghezza: 5, descr: "L'intera via è percorribile fino alla laguna dove si può prendere il traghetto"}
 ]
 /**
  * Points of interest, prende in input quante altezze considerare e quante larghezze per trovare quanti punti sono (altezza*larghezza) e come sono distribuiti sulla mappa
@@ -158,7 +158,7 @@ function createPoint(obj){
             }
             //se la descrizione è vuota viene settata a /
             if (!singlePoint.description){
-                singlePoint.description = "/"
+                singlePoint.description = "Punto vuoto"
             }
             points2.push(singlePoint)
             i = i+1
@@ -194,13 +194,16 @@ function setInterestPoints(array){
         paragrafo.setAttribute("class", "text")
         paragrafo.innerHTML = array[i].description
         div.appendChild(paragrafo)
+        titolo.setAttribute('aria-label', "Altezza: "+array[i].height+" Larghezza: "+ (array[i].width+1))
         //per l'accessibilità, da aggiustare
         paragrafo.setAttribute('aria-describedby', 'pointDescription-'+i)
         titolo.setAttribute('id', 'pointDescription-'+i)
         //togli il commento per nascondere i punti vuoti
-        /*if (paragrafo.innerHTML=="/"){
-            div.style.display="none"
-        }*/
+        if (paragrafo.innerHTML=="Punto vuoto"){
+            paragrafo.style.display="none"
+            titolo.style.display="none"
+            div.setAttribute('aria-label', "Punto: "+(i+1)+" Altezza: "+array[i].height+" Larghezza: "+ (array[i].width+1))
+        }
         //una volta creato il punto viene associato al relativo elemento di points
         points[i].element = document.querySelector('.point-'+i)
         i = i+1
