@@ -101,7 +101,7 @@ scene.environment = environmentMap
 //debugObject.envMapIntensity = 5
 
 /**
- * Descrizioni
+ * Descrizioni con relativa altezza e "larghezza"
  */
 const descrizioni = [
     {altezza: 1, larghezza: 3, descr: "a"},
@@ -109,9 +109,9 @@ const descrizioni = [
     {altezza: -1, larghezza: 5, descr: "c"}
 ]
 /**
- * Points of interest
+ * Points of interest, prende in input quante altezze considerare e quante larghezze per trovare quanti punti sono (altezza*larghezza) e come sono distribuiti sulla mappa
  */
-const points = createPoint({height:3, width:12, descriptions: descrizioni/*["", "a", "b", "c", "d"]*/})
+const points = createPoint({height:3, width:12, descriptions: descrizioni})
 // y=altezze
 /*const points = createPoint([{position: new THREE.Vector3(3, 0, 0), description: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
                             {position: new THREE.Vector3(3, 0, 3), description: "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
@@ -134,13 +134,15 @@ const points = createPoint({height:3, width:12, descriptions: descrizioni/*["", 
 //date le coordinate crea i punti di interesse
 function createPoint(obj){
     var points2 = []
-    var i = 0
-    var l = 0
+    var i = 0   //per i punti totali
+    var l = 0   //per l'altezza
     while (i<obj.height*obj.width-1){
-        var k = 0
+        var k = 0   //per la larghezza
         while (k<obj.width){
             var y = l
+            //setta la descrizione del punto, se presente, l'altezza, la larghezza e la posizione
             var singlePoint = {description: ""}
+            // (0,0,0.1) è la posizione della camera
             singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -k*Math.PI*2/obj.width, y)
             singlePoint.height = y
             singlePoint.width = k
@@ -154,6 +156,7 @@ function createPoint(obj){
                     s++
                 }
             }
+            //se la descrizione è vuota viene settata a /
             if (!singlePoint.description){
                 singlePoint.description = "/"
             }
@@ -161,6 +164,7 @@ function createPoint(obj){
             i = i+1
             k = k+1
         }
+        // setta l'altezza successiva
         if (l<=0){
             l = 1-l
         }
@@ -177,24 +181,27 @@ setInterestPoints(points)
 function setInterestPoints(array){
     var i = 0
     var parentNode = document.getElementById("pointOfInterest")
+    //crea i div relativi ai vari punti
     while (i<array.length){
         var div = document.createElement('div')
         div.setAttribute('class', 'point point-'+i)
         parentNode.appendChild(div)
         var titolo = document.createElement('h2')
         titolo.setAttribute("class", "label")
-        titolo.setAttribute('aria-describedby', 'pointDescription-'+i)
         titolo.innerHTML = i+1
         div.appendChild(titolo)
         var paragrafo = document.createElement('p')
         paragrafo.setAttribute("class", "text")
-        paragrafo.setAttribute('id', 'pointDescription-'+i)
         paragrafo.innerHTML = array[i].description
         div.appendChild(paragrafo)
+        //per l'accessibilità, da aggiustare
+        paragrafo.setAttribute('aria-describedby', 'pointDescription-'+i)
+        titolo.setAttribute('id', 'pointDescription-'+i)
         //togli il commento per nascondere i punti vuoti
         /*if (paragrafo.innerHTML=="/"){
             div.style.display="none"
         }*/
+        //una volta creato il punto viene associato al relativo elemento di points
         points[i].element = document.querySelector('.point-'+i)
         i = i+1
     }
@@ -245,22 +252,26 @@ function pointUpArrow(){
     if (focusedPoint==-1){
         focusedPoint++
     }
+    //cerca l'altezza e la larghezza del punto corrente, oltre all'altezza massima raggiungibile
     let height = points[focusedPoint].height
     let maxHeight = getMaxHeight(points)
     let width = points[focusedPoint].width 
-    focusedPoint = 0
     if (height>=maxHeight){
         console.log("sei in cima")
     }
     else{
+        focusedPoint = 0
+        //finchè l'altezza non aumenta
         while (points[focusedPoint].height<=height){
             focusedPoint++
         }
+        //calcola la larghezza del nuovo punto focalizzato
         focusedPoint = focusedPoint + width
     }
     updateChangeDiv(focusedPoint)
     changingPoint = true
 }
+//analoga alla funzione precedente
 function pointDownArrow(){
     if (focusedPoint==-1){
         focusedPoint++
@@ -268,11 +279,11 @@ function pointDownArrow(){
     let height = points[focusedPoint].height
     let minHeight = getMinHeight(points)
     let width = points[focusedPoint].width 
-    focusedPoint = 0
     if (height<=minHeight){
         console.log("sei in fondo")
     }
     else{
+        focusedPoint = 0
         while (points[focusedPoint].height>=height){
             focusedPoint++
         }
@@ -281,6 +292,7 @@ function pointDownArrow(){
     updateChangeDiv(focusedPoint)
     changingPoint = true
 }
+//ottiene l'altezza massima prendendo in input l'array con tutti i punti
 function getMaxHeight(array){
     let max = 0
     array.forEach( (element) => {
@@ -290,6 +302,7 @@ function getMaxHeight(array){
     })
     return max
 }
+//ottiene l'altezza minima prendendo in input l'array con tutti i punti
 function getMinHeight(array){
     let min = 0
     array.forEach( (element) => {
