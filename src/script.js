@@ -136,11 +136,11 @@ function createPoint(obj){
     var points2 = []
     var i = 0   //per i punti totali
     var l = 0   //per l'altezza
-    while (i<obj.height*obj.width-1){
+    while (i<obj.height*obj.width){
         var k = 0   //per la larghezza
         while (k<obj.width){
             var y = l
-            //setta la descrizione del punto, se presente, l'altezza, la larghezza e la posizione
+            //setta, se presente, la descrizione del punto e l'altezza, la larghezza e la posizione
             var singlePoint = {description: ""}
             // (0,0,0.1) è la posizione della camera
             singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -k*Math.PI*2/obj.width, y)
