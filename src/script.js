@@ -177,8 +177,8 @@ function setInterestPoints(array){
         div.appendChild(paragrafo)
 
         //per l'accessibilità, da aggiustare
-        paragrafo.setAttribute('aria-describedby', 'pointDescription-'+i)
-        titolo.setAttribute('id', 'pointDescription-'+i)
+        titolo.setAttribute('aria-describedby', 'pointDescription-'+i)
+        paragrafo.setAttribute('id', 'pointDescription-'+i)
 
         //togli il commento per nascondere i punti vuoti
         if (paragrafo.innerHTML=="Punto vuoto"){
@@ -186,7 +186,8 @@ function setInterestPoints(array){
             titolo.style.display="none"
         }
 
-        div.setAttribute('aria-label',"Altezza: "+array[i].height+" Ore: "+ (array[i].width+1))
+        titolo.setAttribute('aria-label',"Altezza: "+array[i].height+" Ore: "+ (array[i].width+1))
+        div.setAttribute('aria-live', 'polite')
         //una volta creato il punto viene associato al relativo elemento di points
         points[i].element = document.querySelector('.point-'+i)
         i = i+1
@@ -351,14 +352,13 @@ for (const point of points) {
 //OPZIONALMENTE SI POTREBBE NOTIFICARE NON SUL PARAGRAFO NEUTRO MA SUL SINGOLO PUNTO
 function updateChangeDiv(nParagrafo) {
     const frase1 = "Paragrafo "
-    const frase2 = " in focus, si trova a"
+    const frase2 = " in focus, si trova all'altezza: "
 
-    let fraseX = points[nParagrafo].position.x > 0 ? " nord" : " sud"
-    let fraseY = points[nParagrafo].position.y > 0 ? " verso il basso" : " verso l'alto"
-    let fraseZ = points[nParagrafo].position.z > 0 ? " est" : " ovest"
+    let fraseX = points[nParagrafo].height 
+    let fraseY = points[nParagrafo].width +1 
 
-    let fraseCompleta = frase1 + (nParagrafo + 1).toString() + frase2 + fraseX + fraseZ + fraseY
-    //document.getElementById("change").ariaLabel = fraseCompleta
+    let fraseCompleta = frase1 + (nParagrafo + 1).toString() + frase2 + fraseX + " e ad ore: " + fraseY
+    document.getElementById("change").ariaLabel = fraseCompleta
 }
 
 function resetCameraToNord(){
