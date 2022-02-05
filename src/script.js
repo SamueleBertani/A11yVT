@@ -105,11 +105,7 @@ scene.environment = environmentMap
  * Descrizioni con relativa altezza e "larghezza"
  */
 
-const descrizioni = desccriptionPoints/*[
-    {altezza: 1, larghezza: 3, descr: "La pavimentazione della via risale al 1500 e è fatta di pietra"},
-    {altezza: 0, larghezza: 7, descr: "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
-    {altezza: -1, larghezza: 5, descr: "L'intera via è percorribile fino alla laguna dove si può prendere il traghetto"}
-]*/
+const descrizioni = desccriptionPoints
 /**
  * Points of interest, prende in input quante altezze considerare e quante larghezze per trovare quanti punti sono (altezza*larghezza) e come sono distribuiti sulla mappa
  */
@@ -364,7 +360,9 @@ function updateChangeDiv(nParagrafo) {
 }
 
 function resetCameraToNord(){
-
+    focusedPoint = 0
+    updateChangeDiv(focusedPoint)
+    changingPoint = true
 }
 // function resetCameraToNord(){
 //     controls.enabled = false;
