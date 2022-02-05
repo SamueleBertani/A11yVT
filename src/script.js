@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { gsap } from 'gsap'
 import { Vector3 } from 'three'
-import desccriptionPoints from './descriptions.json'
+import descriptionPoints from './descriptions.json'
 
 /**
  * Loaders
@@ -105,7 +105,7 @@ scene.environment = environmentMap
  * Descrizioni con relativa altezza e "larghezza"
  */
 
-const descrizioni = desccriptionPoints
+const descrizioni = descriptionPoints
 /**
  * Points of interest, prende in input quante altezze considerare e quante larghezze per trovare quanti punti sono (altezza*larghezza) e come sono distribuiti sulla mappa
  */
@@ -113,18 +113,17 @@ const points = createPoint({height:3, width:12, descriptions: descrizioni})
 
 function createPoint(obj){
     var points2 = []
-    var i = 0   //per i punti totali
-    var l = 0   //per l'altezza
-    while (i<obj.height*obj.width){
-        var k = 0   //per la larghezza
-        while (k<obj.width){
-            var y = l
-            //setta, se presente, la descrizione del punto e l'altezza, la larghezza e la posizione
-            var singlePoint = {description: ""}
+    var iteratorePunti = 0   //per i punti totali
+    var iteratoreAltezza = 0   //per l'altezza
+    while (iteratorePunti<obj.height*obj.width){
+        var iteratoreOre = 0   //per le ore
+        while (iteratoreOre<obj.width){
+            //setta, se presente, la descrizione del punto e l'altezza, le ore e la posizione
+            var singlePoint = {description: "Punto vuoto"}
             // (0,0,0.1) è la posizione della camera
-            singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -k*Math.PI*2/obj.width, y)
-            singlePoint.height = y
-            singlePoint.width = k
+            singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -iteratoreOre*Math.PI*2/obj.width, iteratoreAltezza)
+            singlePoint.height = iteratoreAltezza
+            singlePoint.width = iteratoreOre
             var s = 0
             while (s<obj.descriptions.length){
                 if ((obj.descriptions[s].altezza==singlePoint.height)&&(obj.descriptions[s].larghezza==singlePoint.width+1)){
@@ -135,20 +134,16 @@ function createPoint(obj){
                     s++
                 }
             }
-            //se la descrizione è vuota viene settata a /
-            if (!singlePoint.description){
-                singlePoint.description = "Punto vuoto"
-            }
             points2.push(singlePoint)
-            i = i+1
-            k = k+1
+            iteratorePunti = iteratorePunti+1
+            iteratoreOre = iteratoreOre+1
         }
         // setta l'altezza successiva
-        if (l<=0){
-            l = 1-l
+        if (iteratoreAltezza<=0){
+            iteratoreAltezza = 1-iteratoreAltezza
         }
         else {
-            l = -l
+            iteratoreAltezza = -iteratoreAltezza
         }
     }
     console.log(points2)
@@ -240,7 +235,7 @@ function pointUpArrow(){
     //cerca l'altezza e la larghezza del punto corrente, oltre all'altezza massima raggiungibile
     let currentHeight = points[focusedPoint].height
     let maxHeight = getMaxHeight(points)
-    let width = points[focusedPoint].width 
+    let currentWidth = points[focusedPoint].width 
     if (currentHeight>=maxHeight){
         console.log("sei in cima")
     }
@@ -252,7 +247,7 @@ function pointUpArrow(){
             focusedPoint++
         }
         //calcola la larghezza del nuovo punto focalizzato
-        focusedPoint = focusedPoint + width
+        focusedPoint = focusedPoint + currentWidth
     }
     updateChangeDiv(focusedPoint)
     changingPoint = true
