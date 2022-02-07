@@ -119,7 +119,7 @@ function createPoint(obj){
         var iteratoreOre = 0   //per le ore
         while (iteratoreOre<obj.width){
             //setta, se presente, la descrizione del punto e l'altezza, le ore e la posizione
-            var singlePoint = {description: "Punto vuoto"}
+            var singlePoint = {description: " "}
             // (0,0,0.1) è la posizione della camera
             singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -iteratoreOre*Math.PI*2/obj.width, iteratoreAltezza)
             singlePoint.height = iteratoreAltezza
@@ -174,9 +174,9 @@ function setInterestPoints(array){
         paragrafo.setAttribute('id', 'pointDescription-'+i)
 
         //togli il commento per nascondere i punti vuoti
-        if (paragrafo.innerHTML=="Punto vuoto"){
-            paragrafo.style.display="none"
-            titolo.style.display="none"
+        if (paragrafo.innerHTML==" "){
+            paragrafo.setAttribute('class', 'sr-only')
+            titolo.setAttribute('class', 'sr-only')
         }
 
         titolo.setAttribute('aria-label',"Altezza: "+array[i].height+" Ore: "+ (array[i].width+1))
@@ -345,12 +345,12 @@ for (const point of points) {
 //OPZIONALMENTE SI POTREBBE NOTIFICARE NON SUL PARAGRAFO NEUTRO MA SUL SINGOLO PUNTO
 function updateChangeDiv(nParagrafo) {
     const frase1 = "Paragrafo "
-    const frase2 = " in focus, si trova all'altezza: "
+    const frase2 = " , altezza: "
 
     let fraseX = points[nParagrafo].height 
     let fraseY = points[nParagrafo].width +1 
 
-    let fraseCompleta = frase1 + (nParagrafo + 1).toString() + frase2 + fraseX + " e ad ore: " + fraseY
+    let fraseCompleta = frase1 + (nParagrafo + 1).toString() + frase2 + fraseX + " ore: " + fraseY
     document.getElementById("change").ariaLabel = fraseCompleta
 }
 
