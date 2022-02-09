@@ -155,6 +155,14 @@ setInterestPoints(points)
 function setInterestPoints(array){
     var iteratorePunti = 0
     var iteratorePuntiVisibili = 0
+    var iteratorePuntiNonVisibili = 0
+    while (iteratorePunti<array.length){
+        if (array[iteratorePunti].description!=" "){
+            iteratorePuntiNonVisibili++
+        }
+        iteratorePunti++
+    }
+    iteratorePunti = 0
     var parentNode = document.getElementById("pointOfInterest")
     //crea i div relativi ai vari punti
     while (iteratorePunti<array.length){
@@ -164,7 +172,12 @@ function setInterestPoints(array){
         //button fa in modo che aria-describedby sia leggibile
         var titolo = document.createElement('button')
         titolo.setAttribute("class", "label")
-        titolo.innerHTML = iteratorePuntiVisibili+1
+        if (array[iteratorePunti].description==" "){
+            titolo.innerHTML = iteratorePuntiNonVisibili+1
+        }
+        else {
+            titolo.innerHTML = iteratorePuntiVisibili+1
+        }
         div.appendChild(titolo)
         var paragrafo = document.createElement('p')
         paragrafo.setAttribute("class", "text")
@@ -184,6 +197,7 @@ function setInterestPoints(array){
         if (paragrafo.innerHTML==" "){
             paragrafo.setAttribute('class', 'sr-only')
             titolo.setAttribute('class', 'sr-only')
+            iteratorePuntiNonVisibili++
         }
         else {
             iteratorePuntiVisibili = iteratorePuntiVisibili+1
