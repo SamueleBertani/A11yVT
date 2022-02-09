@@ -153,37 +153,42 @@ function createPoint(obj){
 setInterestPoints(points)
 //setta i paragrafi per i punti di interesse
 function setInterestPoints(array){
-    var i = 0
+    var iteratorePunti = 0
+    var iteratorePuntiVisibili = 0
     var parentNode = document.getElementById("pointOfInterest")
     //crea i div relativi ai vari punti
-    while (i<array.length){
+    while (iteratorePunti<array.length){
         var div = document.createElement('div')
-        div.setAttribute('class', 'point point-'+i)
+        div.setAttribute('class', 'point point-'+iteratorePunti)
         parentNode.appendChild(div)
-        var titolo = document.createElement('h2')
+        //button fa in modo che aria-describedby sia leggibile
+        var titolo = document.createElement('button')
         titolo.setAttribute("class", "label")
-        titolo.innerHTML = i+1
+        titolo.innerHTML = iteratorePuntiVisibili+1
         div.appendChild(titolo)
         var paragrafo = document.createElement('p')
         paragrafo.setAttribute("class", "text")
-        paragrafo.innerHTML = array[i].description
+        paragrafo.innerHTML = array[iteratorePunti].description
         div.appendChild(paragrafo)
 
         //per l'accessibilità, da aggiustare
-        titolo.setAttribute('aria-describedby', 'pointDescription-'+i)
-        paragrafo.setAttribute('id', 'pointDescription-'+i)
+        titolo.setAttribute('aria-describedby', 'pointDescription-'+iteratorePunti)
+        paragrafo.setAttribute('id', 'pointDescription-'+iteratorePunti)
 
-        //togli il commento per nascondere i punti vuoti
+        //per nascondere i punti vuoti
         if (paragrafo.innerHTML==" "){
             paragrafo.setAttribute('class', 'sr-only')
             titolo.setAttribute('class', 'sr-only')
         }
+        else {
+            iteratorePuntiVisibili = iteratorePuntiVisibili+1
+        }
 
-        titolo.setAttribute('aria-label',"Altezza: "+array[i].height+" Ore: "+ (array[i].width+1))
-        div.setAttribute('aria-live', 'polite')
+        //titolo.setAttribute('aria-label',"Altezza: "+array[iteratorePunti].height+" Ore: "+ (array[iteratorePunti].width+1))
+        //div.setAttribute('aria-live', 'polite')
         //una volta creato il punto viene associato al relativo elemento di points
-        points[i].element = document.querySelector('.point-'+i)
-        i = i+1
+        points[iteratorePunti].element = document.querySelector('.point-'+iteratorePunti)
+        iteratorePunti = iteratorePunti+1
     }
 }
 
@@ -217,7 +222,7 @@ function nextPointArrow() {
     if (focusedPoint == points.length) {
         focusedPoint = 0
     }
-    updateChangeDiv(focusedPoint)
+    //updateChangeDiv(focusedPoint)
     changingPoint = true
 }
 function previusPointArrow() {
@@ -225,7 +230,7 @@ function previusPointArrow() {
     if (focusedPoint < 0) {
         focusedPoint = points.length - 1
     }
-    updateChangeDiv(focusedPoint)
+    //updateChangeDiv(focusedPoint)
     changingPoint = true
 }
 function pointUpArrow(){
@@ -238,6 +243,7 @@ function pointUpArrow(){
     let currentWidth = points[focusedPoint].width 
     if (currentHeight>=maxHeight){
         console.log("sei in cima")
+        document.getElementById("change").ariaLabel = "Sei in cima"
     }
     else{
         focusedPoint = 0
@@ -248,8 +254,8 @@ function pointUpArrow(){
         }
         //calcola la larghezza del nuovo punto focalizzato
         focusedPoint = focusedPoint + currentWidth
+        //updateChangeDiv(focusedPoint)
     }
-    updateChangeDiv(focusedPoint)
     changingPoint = true
 }
 //analoga alla funzione precedente
@@ -262,6 +268,7 @@ function pointDownArrow(){
     let width = points[focusedPoint].width 
     if (currentHeight<=minHeight){
         console.log("sei in fondo")
+        document.getElementById("change").ariaLabel = "Sei in fondo"
     }
     else{
         focusedPoint = 0
@@ -270,8 +277,8 @@ function pointDownArrow(){
             focusedPoint++
         }
         focusedPoint = focusedPoint + width
+        updateChangeDiv(focusedPoint)
     }
-    updateChangeDiv(focusedPoint)
     changingPoint = true
 }
 //ottiene l'altezza massima prendendo in input l'array con tutti i punti
@@ -304,10 +311,10 @@ function showPointInCamera(){
         if (Array.from(point.element.classList).includes("visible") == true ){
             const fras1 = "Paragrafo "
             const fras2 = " visibile all'altezza "
-            const fras3 = " ed alla larghezza "
-            //const temp = getTranslateXY(point.element)
-            let fraseX2D = point.height//temp.translateX > 0 ? " a destra" : " a sinistra"
-            let fraseY2D = point.width//temp.translateY > 0 ? " in basso" : " in alto" 
+            const fras3 = "  a ore "
+            
+            let fraseX2D = point.height
+            let fraseY2D = point.width+1
 
             fraseFinale1 += fras1 + cont1.toString() + fras2 + fraseX2D + fras3 + fraseY2D + " "
         }
@@ -336,7 +343,7 @@ for (const point of points) {
     point.element.addEventListener("mouseover", onOverOnPoint)
 
     function onOverOnPoint() {
-        updateChangeDiv(num)
+        //updateChangeDiv(num)
     }
 
 }
@@ -356,7 +363,7 @@ function updateChangeDiv(nParagrafo) {
 
 function resetCameraToNord(){
     focusedPoint = 0
-    updateChangeDiv(focusedPoint)
+    //updateChangeDiv(focusedPoint)
     changingPoint = true
 }
 // function resetCameraToNord(){
