@@ -170,10 +170,15 @@ function setInterestPoints(array){
         paragrafo.setAttribute("class", "text")
         paragrafo.innerHTML = array[iteratorePunti].description
         div.appendChild(paragrafo)
+        var paragrafoCordinate = document.createElement('p')
+        paragrafoCordinate.setAttribute("class", "sr-only")
+        paragrafoCordinate.innerHTML = "Altezza: "+array[iteratorePunti].height+" Ore: "+ (array[iteratorePunti].width+1)
+        div.appendChild(paragrafoCordinate)
 
         //per l'accessibilità, da aggiustare
-        titolo.setAttribute('aria-describedby', 'pointDescription-'+iteratorePunti)
+        titolo.setAttribute('aria-describedby', 'pointDescription-'+iteratorePunti+' pointCordinate-'+iteratorePunti)
         paragrafo.setAttribute('id', 'pointDescription-'+iteratorePunti)
+        paragrafoCordinate.setAttribute('id', 'pointCordinate-'+iteratorePunti)
 
         //per nascondere i punti vuoti
         if (paragrafo.innerHTML==" "){
