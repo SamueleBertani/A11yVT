@@ -130,7 +130,7 @@ function createPoint(obj){
         var iteratoreOre = 0   //per le ore
         while (iteratoreOre<obj.width){
             //setta, se presente, la descrizione del punto e l'altezza, le ore e la posizione
-            var singlePoint = {description: " ", link: false}
+            var singlePoint = {description: " ", link: false, mapTarget: " "}
             // (0,0,0.1) è la posizione della camera
             singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -iteratoreOre*Math.PI*2/obj.width, iteratoreAltezza)
             singlePoint.height = iteratoreAltezza
@@ -141,6 +141,7 @@ function createPoint(obj){
                     singlePoint.description = obj.descriptions[s].descr
                     if (obj.descriptions[s].link){
                         singlePoint.link = true
+                        singlePoint.mapTarget = obj.descriptions[s].idTarget
                     }
                     s = obj.descriptions.length
                 }
@@ -193,8 +194,11 @@ function setInterestPoints(array){
             titolo.innerHTML = iteratorePuntiVisibili+1
         }
         div.appendChild(titolo)
+        let target = array[iteratorePunti].mapTarget
         if (array[iteratorePunti].link){
-            titolo.addEventListener("click", function(){switchScene(array)})
+            titolo.addEventListener("click", function(){
+                switchScene(target)
+            })
         }
         var paragrafo = document.createElement('p')
         paragrafo.setAttribute("class", "text")
@@ -227,9 +231,28 @@ function setInterestPoints(array){
         iteratorePunti = iteratorePunti+1
     }
 }
-function switchScene(array){
-    scene.background = environmentMap2
-    scene.environment = environmentMap2
+function switchScene(target){
+    let i = 0
+    while (i<maps.length){
+        if (target==maps[i].id){
+            let map = cubeTextureLoader.load([ 
+                maps[i].map.px,
+                maps[i].map.nx,
+                maps[i].map.py,
+                maps[i].map.ny,
+                maps[i].map.pz,
+                maps[i].map.nz
+            ])
+            map.encoding = THREE.sRGBEncoding
+
+            scene.background = map
+            scene.environment = map
+            i = maps.length
+        }
+        else {
+            i++
+        }
+    }
 }
 
 document.addEventListener("keydown", onDocumentKeyDown, false);
