@@ -94,7 +94,17 @@ const environmentMap = cubeTextureLoader.load([
     '/textures/environmentMaps/0/nz.jpg'
 ])
 
+const environmentMap2 = cubeTextureLoader.load([
+    '/textures/environmentMaps/1/px.jpg',
+    '/textures/environmentMaps/1/nx.jpg',
+    '/textures/environmentMaps/1/py.jpg',
+    '/textures/environmentMaps/1/ny.jpg',
+    '/textures/environmentMaps/1/pz.jpg',
+    '/textures/environmentMaps/1/nz.jpg'
+])
+
 environmentMap.encoding = THREE.sRGBEncoding
+environmentMap2.encoding = THREE.sRGBEncoding
 
 scene.background = environmentMap
 scene.environment = environmentMap
@@ -119,7 +129,7 @@ function createPoint(obj){
         var iteratoreOre = 0   //per le ore
         while (iteratoreOre<obj.width){
             //setta, se presente, la descrizione del punto e l'altezza, le ore e la posizione
-            var singlePoint = {description: " "}
+            var singlePoint = {description: " ", link: false}
             // (0,0,0.1) è la posizione della camera
             singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -iteratoreOre*Math.PI*2/obj.width, iteratoreAltezza)
             singlePoint.height = iteratoreAltezza
@@ -128,6 +138,9 @@ function createPoint(obj){
             while (s<obj.descriptions.length){
                 if ((obj.descriptions[s].altezza==singlePoint.height)&&(obj.descriptions[s].larghezza==singlePoint.width+1)){
                     singlePoint.description = obj.descriptions[s].descr
+                    if (obj.descriptions[s].link){
+                        singlePoint.link = true
+                    }
                     s = obj.descriptions.length
                 }
                 else {
@@ -170,7 +183,7 @@ function setInterestPoints(array){
         div.setAttribute('class', 'point point-'+iteratorePunti)
         parentNode.appendChild(div)
         //button fa in modo che aria-describedby sia leggibile
-        var titolo = document.createElement('button')
+        var titolo = document.createElement('h2')
         titolo.setAttribute("class", "label")
         if (array[iteratorePunti].description==" "){
             titolo.innerHTML = iteratorePuntiNonVisibili+1
@@ -179,6 +192,9 @@ function setInterestPoints(array){
             titolo.innerHTML = iteratorePuntiVisibili+1
         }
         div.appendChild(titolo)
+        if (array[iteratorePunti].link){
+            titolo.addEventListener("click", function(){switchScene(array)})
+        }
         var paragrafo = document.createElement('p')
         paragrafo.setAttribute("class", "text")
         paragrafo.innerHTML = array[iteratorePunti].description
@@ -186,12 +202,12 @@ function setInterestPoints(array){
         var paragrafoCordinate = document.createElement('p')
         paragrafoCordinate.setAttribute("class", "sr-only")
         paragrafoCordinate.innerHTML = "Altezza: "+array[iteratorePunti].height+" Ore: "+ (array[iteratorePunti].width+1)
-        div.appendChild(paragrafoCordinate)
+        div.appendChild(paragrafoCordinate)    
 
-        //per l'accessibilità, da aggiustare
-        titolo.setAttribute('aria-describedby', 'pointDescription-'+iteratorePunti+' pointCordinate-'+iteratorePunti)
-        paragrafo.setAttribute('id', 'pointDescription-'+iteratorePunti)
-        paragrafoCordinate.setAttribute('id', 'pointCordinate-'+iteratorePunti)
+        //per l'accessibilità
+        //titolo.setAttribute('aria-describedby', 'pointDescription-'+iteratorePunti+' pointCordinate-'+iteratorePunti)
+        //paragrafo.setAttribute('id', 'pointDescription-'+iteratorePunti)
+        //paragrafoCordinate.setAttribute('id', 'pointCordinate-'+iteratorePunti)
 
         //per nascondere i punti vuoti
         if (paragrafo.innerHTML==" "){
@@ -204,11 +220,15 @@ function setInterestPoints(array){
         }
 
         //titolo.setAttribute('aria-label',"Altezza: "+array[iteratorePunti].height+" Ore: "+ (array[iteratorePunti].width+1))
-        //div.setAttribute('aria-live', 'polite')
+        //titolo.setAttribute('aria-live', 'polite')
         //una volta creato il punto viene associato al relativo elemento di points
         points[iteratorePunti].element = document.querySelector('.point-'+iteratorePunti)
         iteratorePunti = iteratorePunti+1
     }
+}
+function switchScene(array){
+    scene.background = environmentMap2
+    scene.environment = environmentMap2
 }
 
 document.addEventListener("keydown", onDocumentKeyDown, false);
@@ -241,7 +261,7 @@ function nextPointArrow() {
     if (focusedPoint == points.length) {
         focusedPoint = 0
     }
-    //updateChangeDiv(focusedPoint)
+    updateChangeDiv(focusedPoint)
     changingPoint = true
 }
 function previusPointArrow() {
@@ -249,7 +269,7 @@ function previusPointArrow() {
     if (focusedPoint < 0) {
         focusedPoint = points.length - 1
     }
-    //updateChangeDiv(focusedPoint)
+    updateChangeDiv(focusedPoint)
     changingPoint = true
 }
 function pointUpArrow(){
@@ -273,7 +293,7 @@ function pointUpArrow(){
         }
         //calcola la larghezza del nuovo punto focalizzato
         focusedPoint = focusedPoint + currentWidth
-        //updateChangeDiv(focusedPoint)
+        updateChangeDiv(focusedPoint)
     }
     changingPoint = true
 }
@@ -362,7 +382,7 @@ for (const point of points) {
     point.element.addEventListener("mouseover", onOverOnPoint)
 
     function onOverOnPoint() {
-        //updateChangeDiv(num)
+        updateChangeDiv(num)
     }
 
 }
@@ -382,7 +402,7 @@ function updateChangeDiv(nParagrafo) {
 
 function resetCameraToNord(){
     focusedPoint = 0
-    //updateChangeDiv(focusedPoint)
+    updateChangeDiv(focusedPoint)
     changingPoint = true
 }
 // function resetCameraToNord(){
