@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { gsap } from 'gsap'
 import { Vector3 } from 'three'
-import descriptionPoints from './descriptions.json'
+import maps from './descriptions.json'
 
 /**
  * Loaders
@@ -86,12 +86,12 @@ const scene = new THREE.Scene()
  * Environment map  
  */
 const environmentMap = cubeTextureLoader.load([ 
-    '/textures/environmentMaps/0/px.jpg',
-    '/textures/environmentMaps/0/nx.jpg',
-    '/textures/environmentMaps/0/py.jpg',
-    '/textures/environmentMaps/0/ny.jpg',
-    '/textures/environmentMaps/0/pz.jpg',
-    '/textures/environmentMaps/0/nz.jpg'
+    maps[0].map.px,
+    maps[0].map.nx,
+    maps[0].map.py,
+    maps[0].map.ny,
+    maps[0].map.pz,
+    maps[0].map.nz
 ])
 
 const environmentMap2 = cubeTextureLoader.load([
@@ -115,7 +115,8 @@ scene.environment = environmentMap
  * Descrizioni con relativa altezza e "larghezza"
  */
 
-const descrizioni = descriptionPoints
+const descrizioni = maps[0].points
+
 /**
  * Points of interest, prende in input quante altezze considerare e quante larghezze per trovare quanti punti sono (altezza*larghezza) e come sono distribuiti sulla mappa
  */

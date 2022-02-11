@@ -1,6 +1,21 @@
 [
-    {"link": true, "altezza": 0, "larghezza": 1, "descr": "un altro incrocio"},
-    {"link": false, "altezza": 1, "larghezza": 3, "descr": "La pavimentazione della via risale al 1500 e è fatta di pietra"},
-    {"link": false, "altezza": 0, "larghezza": 7, "descr": "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
-    {"link": false, "altezza": -1, "larghezza": 5, "descr": "L'intera via è percorribile fino alla laguna dove si può prendere il traghetto"}
+    {
+        "id": "start",
+        "map": {
+                "px":"/textures/environmentMaps/0/px.jpg",
+                "nx":"/textures/environmentMaps/0/nx.jpg",
+                "py":"/textures/environmentMaps/0/py.jpg",
+                "ny":"/textures/environmentMaps/0/ny.jpg",
+                "pz":"/textures/environmentMaps/0/pz.jpg",
+                "nz":"/textures/environmentMaps/0/nz.jpg"
+            }
+        ,
+        "points": [
+            {"link": true, "altezza": 0, "larghezza": 1, "descr": "un altro incrocio"},
+            {"link": false, "altezza": 1, "larghezza": 3, "descr": "La pavimentazione della via risale al 1500 e è fatta di pietra"},
+            {"link": false, "altezza": 0, "larghezza": 7, "descr": "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena"},
+            {"link": false, "altezza": -1, "larghezza": 5, "descr": "L'intera via è percorribile fino alla laguna dove si può prendere il traghetto"}
+        ]
+    }
+    
 ]
