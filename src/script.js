@@ -115,12 +115,14 @@ scene.environment = environmentMap
  * Descrizioni con relativa altezza e "larghezza"
  */
 
-const descrizioni = maps[0].points
+const descrizioni = maps[0].punti
+const alt = 3
+const ore = 12
 
 /**
  * Points of interest, prende in input quante altezze considerare e quante larghezze per trovare quanti punti sono (altezza*larghezza) e come sono distribuiti sulla mappa
  */
-const points = createPoint({height:3, width:12, descriptions: descrizioni})
+var points = createPoint({height:alt, width:ore, descriptions: descrizioni})
 
 function createPoint(obj){
     var points2 = []
@@ -183,8 +185,9 @@ function setInterestPoints(array){
     while (iteratorePunti<array.length){
         var div = document.createElement('div')
         div.setAttribute('class', 'point point-'+iteratorePunti)
+        div.setAttribute('id', 'point-'+iteratorePunti)
         parentNode.appendChild(div)
-        //button fa in modo che aria-describedby sia leggibile
+        //cambia in button per fare in modo che aria-describedby sia leggibile
         var titolo = document.createElement('h2')
         titolo.setAttribute("class", "label")
         if (array[iteratorePunti].description==" "){
@@ -232,26 +235,38 @@ function setInterestPoints(array){
     }
 }
 function switchScene(target){
-    let i = 0
-    while (i<maps.length){
-        if (target==maps[i].id){
+    let iteratoreMappe = 0
+    while (iteratoreMappe<maps.length){
+        if (target==maps[iteratoreMappe].id){
             let map = cubeTextureLoader.load([ 
-                maps[i].map.px,
-                maps[i].map.nx,
-                maps[i].map.py,
-                maps[i].map.ny,
-                maps[i].map.pz,
-                maps[i].map.nz
+                maps[iteratoreMappe].map.px,
+                maps[iteratoreMappe].map.nx,
+                maps[iteratoreMappe].map.py,
+                maps[iteratoreMappe].map.ny,
+                maps[iteratoreMappe].map.pz,
+                maps[iteratoreMappe].map.nz
             ])
             map.encoding = THREE.sRGBEncoding
 
             scene.background = map
             scene.environment = map
-            i = maps.length
+            removeOldInterestPoints()
+            points = createPoint({height:alt, width:ore, descriptions: maps[iteratoreMappe].punti})
+            setInterestPoints(points)
+            iteratoreMappe = maps.length
         }
         else {
-            i++
+            iteratoreMappe++
         }
+    }
+}
+
+function removeOldInterestPoints(){
+    var iteratorePunti = 0
+    while (iteratorePunti<alt*ore){
+        var element = document.getElementById('point-'+iteratorePunti)
+        element.remove()
+        iteratorePunti++
     }
 }
 

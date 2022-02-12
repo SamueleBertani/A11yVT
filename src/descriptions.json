@@ -9,7 +9,7 @@
                 "pz":"/textures/environmentMaps/0/pz.jpg",
                 "nz":"/textures/environmentMaps/0/nz.jpg"
         },
-        "points": [
+        "punti": [
             {"link": true, "altezza": 0, "larghezza": 1, "descr": "uno spiazzo verde", "idTarget":"mappa2"},
             {"link": false, "altezza": 1, "larghezza": 3, "descr": "La pavimentazione della via risale al 1500 e è fatta di pietra","idTarget":""},
             {"link": false, "altezza": 0, "larghezza": 7, "descr": "L'angolo della casa è composto da una pila di blocchi di marmo estratti a Cesena","idTarget":""},
@@ -26,8 +26,8 @@
             "pz": "/textures/environmentMaps/1/pz.jpg",
             "nz": "/textures/environmentMaps/1/nz.jpg"
         },
-        "points":[
-            {"link": true, "altezza": 0, "larghezza": 1, "descr": "un altro incrocio", "idTarget":"start"}
+        "punti":[
+            {"link": true, "altezza": 0, "larghezza": 2, "descr": "un altro incrocio", "idTarget":"start"}
         ]
     }
     
