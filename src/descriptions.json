@@ -27,7 +27,10 @@
             "nz": "/textures/environmentMaps/1/nz.jpg"
         },
         "punti":[
-            {"link": true, "altezza": 0, "larghezza": 2, "descr": "un altro incrocio", "idTarget":"start"}
+            {"link": true, "altezza": 0, "larghezza": 1, "descr": "Un incrocio", "idTarget":"start"},
+            {"link": false, "altezza": 0, "larghezza": 5, "descr": "Una fattoria","idTarget":""},
+            {"link": false, "altezza": 0, "larghezza": 7, "descr": "Tralicci dell'alta tensione","idTarget":""},
+            {"link": false, "altezza": -1, "larghezza": 5, "descr": "Molta erba","idTarget":""}
         ]
     }
     

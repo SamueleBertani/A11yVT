@@ -221,6 +221,7 @@ function setInterestPoints(array){
         if (paragrafo.innerHTML==" "){
             paragrafo.setAttribute('class', 'sr-only')
             titolo.setAttribute('class', 'sr-only')
+            div.setAttribute('aria-hidden', 'true')
             iteratorePuntiNonVisibili++
         }
         else {
@@ -320,8 +321,14 @@ function pointUpArrow(){
     let maxHeight = getMaxHeight(points)
     let currentWidth = points[focusedPoint].width 
     if (currentHeight>=maxHeight){
-        console.log("sei in cima")
-        document.getElementById("change").ariaLabel = "Sei in cima"
+        //così è terribile
+        let text = document.getElementById("change").innerHTML
+        if (text.slice(0,9)=="Paragrafo"){
+            document.getElementById("change").innerHTML = "Sei in cima" 
+        }
+        else {
+            document.getElementById("change").innerHTML = text + "\u00A0"
+        }
     }
     else{
         focusedPoint = 0
@@ -345,8 +352,14 @@ function pointDownArrow(){
     let minHeight = getMinHeight(points)
     let width = points[focusedPoint].width 
     if (currentHeight<=minHeight){
-        console.log("sei in fondo")
-        document.getElementById("change").ariaLabel = "Sei in fondo"
+        //così è terribile
+        let text = document.getElementById("change").innerHTML
+        if (text.slice(0,9)=="Paragrafo"){
+            document.getElementById("change").innerHTML = "Sei in fondo" 
+        }
+        else {
+            document.getElementById("change").innerHTML = text + "\u00A0"
+        }
     }
     else{
         focusedPoint = 0
@@ -436,7 +449,7 @@ function updateChangeDiv(nParagrafo) {
     let fraseY = points[nParagrafo].width +1 
 
     let fraseCompleta = frase1 + (nParagrafo + 1).toString() + frase2 + fraseX + " ore: " + fraseY
-    document.getElementById("change").ariaLabel = fraseCompleta
+    document.getElementById("change").innerHTML = fraseCompleta
 }
 
 function resetCameraToNord(){
