@@ -15,12 +15,10 @@ let sceneReady = false
 const loadingManager = new THREE.LoadingManager(
     // Loaded
     () => {
-        // Wait a little
+        // caricamento
         window.setTimeout(() => {
-            // Animate overlay
-            //gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0, delay: 1 })
 
-            // Update loadingBarElement
+            // aggiornamento iniziale loadingBarElement
             loadingBarElement.classList.add('ended')
             loadingBarElement.style.transform = ''
         }, 500)
@@ -32,7 +30,7 @@ const loadingManager = new THREE.LoadingManager(
 
     // Progress
     (itemUrl, itemsLoaded, itemsTotal) => {
-        // Calculate the progress and update the loadingBarElement
+        // calcolo del progresso e aggiornamento loadingBarElement
         const progressRatio = itemsLoaded / itemsTotal
         loadingBarElement.style.transform = `scaleX(${progressRatio})`
     }
@@ -52,40 +50,11 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-// /**
-//  * Overlay
-//  */
-// const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
-// const overlayMaterial = new THREE.ShaderMaterial({
-//     // wireframe: true,
-//     transparent: true,
-//     uniforms:
-//     {
-//         uAlpha: { value: 1 }
-//     },
-//     vertexShader: `
-//         void main()
-//         {
-//             gl_Position = vec4(position, 1.0);
-//         }
-//     `,
-//     fragmentShader: `
-//         uniform float uAlpha;
-
-//         void main()
-//         {
-//             gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
-//         }
-//     `
-// })
-// const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
-// scene.add(overlay)
-
 
 /**
  * Environment map  
  */
-const environmentMap = cubeTextureLoader.load([ 
+const environmentMap = cubeTextureLoader.load([
     maps[0].map.px,
     maps[0].map.nx,
     maps[0].map.py,
@@ -109,7 +78,7 @@ environmentMap2.encoding = THREE.sRGBEncoding
 scene.background = environmentMap
 scene.environment = environmentMap
 
-//debugObject.envMapIntensity = 5
+debugObject.envMapIntensity = 5
 
 /**
  * Descrizioni con relativa altezza e "larghezza"
@@ -122,26 +91,26 @@ const ore = 12
 /**
  * Points of interest, prende in input quante altezze considerare e quante larghezze per trovare quanti punti sono (altezza*larghezza) e come sono distribuiti sulla mappa
  */
-var points = createPoint({height:alt, width:ore, descriptions: descrizioni})
+var points = createPoint({ height: alt, width: ore, descriptions: descrizioni })
 
-function createPoint(obj){
+function createPoint(obj) {
     var points2 = []
     var iteratorePunti = 0   //per i punti totali
     var iteratoreAltezza = 0   //per l'altezza
-    while (iteratorePunti<obj.height*obj.width){
+    while (iteratorePunti < obj.height * obj.width) {
         var iteratoreOre = 0   //per le ore
-        while (iteratoreOre<obj.width){
+        while (iteratoreOre < obj.width) {
             //setta, se presente, la descrizione del punto e l'altezza, le ore e la posizione
-            var singlePoint = {description: " ", link: false, mapTarget: " "}
+            var singlePoint = { description: " ", link: false, mapTarget: " " }
             // (0,0,0.1) è la posizione della camera
-            singlePoint.position = new THREE.Vector3(0,0,0.1).setFromCylindricalCoords(3, -iteratoreOre*Math.PI*2/obj.width, iteratoreAltezza)
+            singlePoint.position = new THREE.Vector3(0, 0, 0.1).setFromCylindricalCoords(3, -iteratoreOre * Math.PI * 2 / obj.width, iteratoreAltezza)
             singlePoint.height = iteratoreAltezza
             singlePoint.width = iteratoreOre
             var s = 0
-            while (s<obj.descriptions.length){
-                if ((obj.descriptions[s].altezza==singlePoint.height)&&(obj.descriptions[s].larghezza==singlePoint.width+1)){
+            while (s < obj.descriptions.length) {
+                if ((obj.descriptions[s].altezza == singlePoint.height) && (obj.descriptions[s].larghezza == singlePoint.width + 1)) {
                     singlePoint.description = obj.descriptions[s].descr
-                    if (obj.descriptions[s].link){
+                    if (obj.descriptions[s].link) {
                         singlePoint.link = true
                         singlePoint.mapTarget = obj.descriptions[s].idTarget
                     }
@@ -152,12 +121,12 @@ function createPoint(obj){
                 }
             }
             points2.push(singlePoint)
-            iteratorePunti = iteratorePunti+1
-            iteratoreOre = iteratoreOre+1
+            iteratorePunti = iteratorePunti + 1
+            iteratoreOre = iteratoreOre + 1
         }
         // setta l'altezza successiva
-        if (iteratoreAltezza<=0){
-            iteratoreAltezza = 1-iteratoreAltezza
+        if (iteratoreAltezza <= 0) {
+            iteratoreAltezza = 1 - iteratoreAltezza
         }
         else {
             iteratoreAltezza = -iteratoreAltezza
@@ -169,12 +138,12 @@ function createPoint(obj){
 
 setInterestPoints(points)
 //setta i paragrafi per i punti di interesse
-function setInterestPoints(array){
+function setInterestPoints(array) {
     var iteratorePunti = 0
     var iteratorePuntiVisibili = 0
     var iteratorePuntiNonVisibili = 0
-    while (iteratorePunti<array.length){
-        if (array[iteratorePunti].description!=" "){
+    while (iteratorePunti < array.length) {
+        if (array[iteratorePunti].description != " ") {
             iteratorePuntiNonVisibili++
         }
         iteratorePunti++
@@ -182,24 +151,24 @@ function setInterestPoints(array){
     iteratorePunti = 0
     var parentNode = document.getElementById("pointOfInterest")
     //crea i div relativi ai vari punti
-    while (iteratorePunti<array.length){
+    while (iteratorePunti < array.length) {
         var div = document.createElement('div')
-        div.setAttribute('class', 'point point-'+iteratorePunti)
-        div.setAttribute('id', 'point-'+iteratorePunti)
+        div.setAttribute('class', 'point point-' + iteratorePunti)
+        div.setAttribute('id', 'point-' + iteratorePunti)
         parentNode.appendChild(div)
         //cambia in button per fare in modo che aria-describedby sia leggibile
         var titolo = document.createElement('h2')
         titolo.setAttribute("class", "label")
-        if (array[iteratorePunti].description==" "){
-            titolo.innerHTML = iteratorePuntiNonVisibili+1
+        if (array[iteratorePunti].description == " ") {
+            titolo.innerHTML = iteratorePuntiNonVisibili + 1
         }
         else {
-            titolo.innerHTML = iteratorePuntiVisibili+1
+            titolo.innerHTML = iteratorePuntiVisibili + 1
         }
         div.appendChild(titolo)
         let target = array[iteratorePunti].mapTarget
-        if (array[iteratorePunti].link){
-            titolo.addEventListener("click", function(){
+        if (array[iteratorePunti].link) {
+            titolo.addEventListener("click", function () {
                 switchScene(target)
             })
         }
@@ -209,37 +178,30 @@ function setInterestPoints(array){
         div.appendChild(paragrafo)
         var paragrafoCordinate = document.createElement('p')
         paragrafoCordinate.setAttribute("class", "sr-only")
-        paragrafoCordinate.innerHTML = "Altezza: "+array[iteratorePunti].height+" Ore: "+ (array[iteratorePunti].width+1)
-        div.appendChild(paragrafoCordinate)    
-
-        //per l'accessibilità
-        //titolo.setAttribute('aria-describedby', 'pointDescription-'+iteratorePunti+' pointCordinate-'+iteratorePunti)
-        //paragrafo.setAttribute('id', 'pointDescription-'+iteratorePunti)
-        //paragrafoCordinate.setAttribute('id', 'pointCordinate-'+iteratorePunti)
+        paragrafoCordinate.innerHTML = "Altezza: " + array[iteratorePunti].height + " Ore: " + (array[iteratorePunti].width + 1)
+        div.appendChild(paragrafoCordinate)
 
         //per nascondere i punti vuoti
-        if (paragrafo.innerHTML==" "){
+        if (paragrafo.innerHTML == " ") {
             paragrafo.setAttribute('class', 'sr-only')
             titolo.setAttribute('class', 'sr-only')
             div.setAttribute('aria-hidden', 'true')
             iteratorePuntiNonVisibili++
         }
         else {
-            iteratorePuntiVisibili = iteratorePuntiVisibili+1
+            iteratorePuntiVisibili = iteratorePuntiVisibili + 1
         }
 
-        //titolo.setAttribute('aria-label',"Altezza: "+array[iteratorePunti].height+" Ore: "+ (array[iteratorePunti].width+1))
-        //titolo.setAttribute('aria-live', 'polite')
         //una volta creato il punto viene associato al relativo elemento di points
-        points[iteratorePunti].element = document.querySelector('.point-'+iteratorePunti)
-        iteratorePunti = iteratorePunti+1
+        points[iteratorePunti].element = document.querySelector('.point-' + iteratorePunti)
+        iteratorePunti = iteratorePunti + 1
     }
 }
-function switchScene(target){
+function switchScene(target) {
     let iteratoreMappe = 0
-    while (iteratoreMappe<maps.length){
-        if (target==maps[iteratoreMappe].id){
-            let map = cubeTextureLoader.load([ 
+    while (iteratoreMappe < maps.length) {
+        if (target == maps[iteratoreMappe].id) {
+            let map = cubeTextureLoader.load([
                 maps[iteratoreMappe].map.px,
                 maps[iteratoreMappe].map.nx,
                 maps[iteratoreMappe].map.py,
@@ -252,7 +214,7 @@ function switchScene(target){
             scene.background = map
             scene.environment = map
             removeOldInterestPoints()
-            points = createPoint({height:alt, width:ore, descriptions: maps[iteratoreMappe].punti})
+            points = createPoint({ height: alt, width: ore, descriptions: maps[iteratoreMappe].punti })
             setInterestPoints(points)
             iteratoreMappe = maps.length
         }
@@ -262,10 +224,10 @@ function switchScene(target){
     }
 }
 
-function removeOldInterestPoints(){
+function removeOldInterestPoints() {
     var iteratorePunti = 0
-    while (iteratorePunti<alt*ore){
-        var element = document.getElementById('point-'+iteratorePunti)
+    while (iteratorePunti < alt * ore) {
+        var element = document.getElementById('point-' + iteratorePunti)
         element.remove()
         iteratorePunti++
     }
@@ -276,19 +238,19 @@ function onDocumentKeyDown(event) {
     var keyCode = event.which;
     console.log(keyCode)
 
-    if (keyCode == 39) { 
+    if (keyCode == 39) {
         nextPointArrow()
     } else if (keyCode == 37) {
         previusPointArrow()
-    } else if (keyCode == 38){  //freccia su
+    } else if (keyCode == 38) {  //freccia su
         pointUpArrow()
-    } else if (keyCode == 40){  //freccia giù
+    } else if (keyCode == 40) {  //freccia giù
         pointDownArrow()
     } else if (keyCode == 32) { //space
         showPointInCamera()
     } else if (keyCode == 82) { //r
         resetCameraToNord()
-    } 
+    }
 }
 
 
@@ -312,29 +274,30 @@ function previusPointArrow() {
     updateChangeDiv(focusedPoint)
     changingPoint = true
 }
-function pointUpArrow(){
-    if (focusedPoint==-1){
+function pointUpArrow() {
+    if (focusedPoint == -1) {
         focusedPoint++
     }
     //cerca l'altezza e la larghezza del punto corrente, oltre all'altezza massima raggiungibile
     let currentHeight = points[focusedPoint].height
     let maxHeight = getMaxHeight(points)
-    let currentWidth = points[focusedPoint].width 
-    if (currentHeight>=maxHeight){
-        //così è terribile
+    let currentWidth = points[focusedPoint].width
+
+    if (currentHeight >= maxHeight) {
+
         let text = document.getElementById("change").innerHTML
-        if (text.slice(0,9)=="Paragrafo"){
+        if ((text.slice(0,9)=="Paragrafo")||(text.slice(0,3)=="Alt")||(text=="Sei in cima" + ".")){
             document.getElementById("change").innerHTML = "Sei in cima" 
         }
         else {
-            document.getElementById("change").innerHTML = text + "\u00A0"
+            document.getElementById("change").innerHTML = text + "."
         }
     }
-    else{
+    else {
         focusedPoint = 0
-        let nextHeight = currentHeight+1
+        let nextHeight = currentHeight + 1
         //finchè l'altezza non aumenta
-        while (points[focusedPoint].height!=nextHeight){
+        while (points[focusedPoint].height != nextHeight) {
             focusedPoint++
         }
         //calcola la larghezza del nuovo punto focalizzato
@@ -343,28 +306,29 @@ function pointUpArrow(){
     }
     changingPoint = true
 }
+
 //analoga alla funzione precedente
-function pointDownArrow(){
-    if (focusedPoint==-1){
+function pointDownArrow() {
+    if (focusedPoint == -1) {
         focusedPoint++
     }
     let currentHeight = points[focusedPoint].height
     let minHeight = getMinHeight(points)
-    let width = points[focusedPoint].width 
-    if (currentHeight<=minHeight){
+    let width = points[focusedPoint].width
+    if (currentHeight <= minHeight) {
         //così è terribile
         let text = document.getElementById("change").innerHTML
-        if (text.slice(0,9)=="Paragrafo"){
+        if ((text.slice(0,9)=="Paragrafo")||(text.slice(0,3)=="Alt")||(text==("Sei in fondo" + "."))){
             document.getElementById("change").innerHTML = "Sei in fondo" 
         }
         else {
-            document.getElementById("change").innerHTML = text + "\u00A0"
+            document.getElementById("change").innerHTML = text + "."
         }
     }
-    else{
+    else {
         focusedPoint = 0
-        let previousHeight = currentHeight-1
-        while (points[focusedPoint].height!=previousHeight){
+        let previousHeight = currentHeight - 1
+        while (points[focusedPoint].height != previousHeight) {
             focusedPoint++
         }
         focusedPoint = focusedPoint + width
@@ -372,46 +336,46 @@ function pointDownArrow(){
     }
     changingPoint = true
 }
+
 //ottiene l'altezza massima prendendo in input l'array con tutti i punti
-function getMaxHeight(array){
+function getMaxHeight(array) {
     let max = 0
-    array.forEach( (element) => {
-        if (element.height > max){
+    array.forEach((element) => {
+        if (element.height > max) {
             max = element.height
         }
     })
     return max
 }
 //ottiene l'altezza minima prendendo in input l'array con tutti i punti
-function getMinHeight(array){
+function getMinHeight(array) {
     let min = 0
-    array.forEach( (element) => {
-        if (element.height < min){
+    array.forEach((element) => {
+        if (element.height < min) {
             min = element.height
         }
     })
     return min
 }
 
-function showPointInCamera(){           
+function showPointInCamera() {
     let cont1 = 0
     let fraseFinale1 = ""
-    
+
     for (const point of points) {
         cont1++
-        if (Array.from(point.element.classList).includes("visible") == true ){
+        if (Array.from(point.element.classList).includes("readable") == true ){
             const fras1 = "Paragrafo "
-            const fras2 = " visibile all'altezza "
-            const fras3 = "  a ore "
-            
-            let fraseX2D = point.height
-            let fraseY2D = point.width+1
+            const fras2 = " visibile nell'area"
+            const temp = getTranslateXY(point.element)
+            let fraseX2D = temp.translateX > 0 ? " a destra" : (temp.translateX==0) ? " al centro" : " a sinistra"
+            let fraseY2D = temp.translateY > 0 ? " in basso" : (temp.translateY==0) ? " al centro" : " in alto" 
 
-            fraseFinale1 += fras1 + cont1.toString() + fras2 + fraseX2D + fras3 + fraseY2D + " "
+            fraseFinale1 += fras1 + cont1.toString() + fras2 + fraseX2D + fraseY2D + " "
         }
     }
     if (fraseFinale1 != ""){
-        document.getElementById("change").ariaLabel = fraseFinale1
+        document.getElementById("change").innerHTML = fraseFinale1
     }
 
 }
@@ -442,40 +406,21 @@ for (const point of points) {
 
 //OPZIONALMENTE SI POTREBBE NOTIFICARE NON SUL PARAGRAFO NEUTRO MA SUL SINGOLO PUNTO
 function updateChangeDiv(nParagrafo) {
-    const frase1 = "Paragrafo "
-    const frase2 = " , altezza: "
+    //const frase1 = "Paragrafo "
+    const frase2 = "Altezza: "
 
-    let fraseX = points[nParagrafo].height 
-    let fraseY = points[nParagrafo].width +1 
+    let fraseX = points[nParagrafo].height
+    let fraseY = points[nParagrafo].width + 1
 
-    let fraseCompleta = frase1 + (nParagrafo + 1).toString() + frase2 + fraseX + " ore: " + fraseY
+    let fraseCompleta = frase2 + fraseX + " ore: " + fraseY
     document.getElementById("change").innerHTML = fraseCompleta
 }
 
-function resetCameraToNord(){
+function resetCameraToNord() {
     focusedPoint = 0
     updateChangeDiv(focusedPoint)
     changingPoint = true
 }
-// function resetCameraToNord(){
-//     controls.enabled = false;
-    
-//     console.log(camera.rotation)
-//     const startOrientation = camera.quaternion.clone();
-    
-    
-//     gsap.to( {}, {
-//         duration: 2,
-//         onUpdate: function() {
-//             camera.quaternion.copy(startOrientation).slerp(targetOrientation, this.progress());
-//         },
-//         onComplete: function() {
-//             controls.enabled = true;
-//             console.log("reset")
-//         }
-//     } );
-
-// }
 
 
 /**
@@ -508,7 +453,7 @@ window.addEventListener('resize', () => {
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
 camera.position.set(0, 0, 0.1)
 scene.add(camera)
-  
+
 
 // Controls                                            
 var controls = new OrbitControls(camera, canvas)
@@ -541,47 +486,22 @@ const tick = () => {
     //console.log(changingPoint)
     if (changingPoint == true) {
 
-        /*// backup original rotation
-        var startRotation = new THREE.Euler().copy( camera.rotation );
-
-        // final rotation (with lookAt)
-        camera.lookAt( points[focusedPoint].position );
-        var endRotation = new THREE.Euler().copy( camera.rotation );
-
-        // revert to original rotation
-        camera.rotation.copy( startRotation );
-        console.log(startRotation)
-        console.log(endRotation)
-
-        gsap.to(camera.rotation,{
-            duration:1,
-            x: endRotation.x,
-            y: endRotation.y,
-            z: endRotation.z,
-        })*/
         camera.lookAt(points[focusedPoint].position)
-        
-        //camera.localToWorld(points[focusedPoint].position)
-        //controls.object(camera)
+
         controls.saveState()
-        //controls=new OrbitControls(camera, canvas)
-        changingPoint=false
+
+        changingPoint = false
         firsttouch = false
-   // else if (){
-   //     camera.lookAt(new Vector3(0,1,0))
+
     } else {
-        if (firsttouch){
+        if (firsttouch) {
             controls.update()
-        }
-        else{
-            //camera.position.set (0,0,0.1)
-            
         }
     }
 
 
-    // Update points only when the scene is ready
-    if (sceneReady) {                   
+    // aggiorna i punti solo quando lo schermo è pronto
+    if (sceneReady) {
         camera.updateMatrix();
         camera.updateMatrixWorld();
         var frustum = new THREE.Frustum();
@@ -589,23 +509,27 @@ const tick = () => {
             new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse)
         );
 
-        // Go through each point
+        // esegue per ogni punto
         for (const point of points) {
 
-            //3d point to check
+            //pprende i punti 3d
             if (frustum.containsPoint(point.position)) {
-                // Get 2D screen position
+                // assegna posizione 2d
                 const screenPosition = point.position.clone()
                 screenPosition.project(camera)
 
+                if (point.description!=" "){
+                    point.element.classList.add('readable')
+                }
                 point.element.classList.add('visible')
 
                 const translateX = screenPosition.x * sizes.width * 0.5
                 const translateY = - screenPosition.y * sizes.height * 0.5
-                //console.log(screenPosition.x, screenPosition.y)
+
                 point.element.style.transform = `translateX(${translateX}px) translateY(${translateY}px)`
             } else {
                 //set no visible
+                point.element.classList.remove('readable')
                 point.element.classList.remove('visible')
             }
 
@@ -615,7 +539,7 @@ const tick = () => {
     // Render
     renderer.render(scene, camera)
 
-    // Call tick again on the next frame
+    // richiamo tick per ogni frame
     window.requestAnimationFrame(tick)
 }
 
