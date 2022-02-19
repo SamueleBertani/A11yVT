@@ -415,6 +415,9 @@ function updateChangeDiv(nParagrafo) {
     let fraseY = points[nParagrafo].width + 1
 
     let fraseCompleta = frase1 + points[nParagrafo].numeroParagrafo + frase2 + fraseX + " ore: " + fraseY
+    if (points[nParagrafo].description!=" "){
+        fraseCompleta += " " + points[nParagrafo].description
+    }
     document.getElementById("change").innerHTML = fraseCompleta
 }
 
