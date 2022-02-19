@@ -17,8 +17,6 @@ const loadingManager = new THREE.LoadingManager(
     () => {
         // Wait a little
         window.setTimeout(() => {
-            // Animate overlay
-            //gsap.to(overlayMaterial.uniforms.uAlpha, { duration: 3, value: 0, delay: 1 })
 
             // Update loadingBarElement
             loadingBarElement.classList.add('ended')
@@ -52,35 +50,6 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-// /**
-//  * Overlay
-//  */
-// const overlayGeometry = new THREE.PlaneGeometry(2, 2, 1, 1)
-// const overlayMaterial = new THREE.ShaderMaterial({
-//     // wireframe: true,
-//     transparent: true,
-//     uniforms:
-//     {
-//         uAlpha: { value: 1 }
-//     },
-//     vertexShader: `
-//         void main()
-//         {
-//             gl_Position = vec4(position, 1.0);
-//         }
-//     `,
-//     fragmentShader: `
-//         uniform float uAlpha;
-
-//         void main()
-//         {
-//             gl_FragColor = vec4(0.0, 0.0, 0.0, uAlpha);
-//         }
-//     `
-// })
-// const overlay = new THREE.Mesh(overlayGeometry, overlayMaterial)
-// scene.add(overlay)
-
 
 /**
  * Environment map  
@@ -109,7 +78,7 @@ environmentMap2.encoding = THREE.sRGBEncoding
 scene.background = environmentMap
 scene.environment = environmentMap
 
-//debugObject.envMapIntensity = 5
+debugObject.envMapIntensity = 5
 
 /**
  * Descrizioni con relativa altezza e "larghezza"
