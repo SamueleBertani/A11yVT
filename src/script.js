@@ -373,7 +373,7 @@ function showPointInCamera() {
             let fraseX2D = temp.translateX > 0 ? " a destra" : (temp.translateX==0) ? " al centro" : " a sinistra"
             let fraseY2D = temp.translateY > 0 ? " in basso" : (temp.translateY==0) ? " al centro" : " in alto" 
 
-            fraseFinale1 += fras1 + cont1.toString() + fras2 + fraseX2D + fraseY2D + " "
+            fraseFinale1 += fras1 + points[cont1-1].numeroParagrafo + fras2 + fraseX2D + fraseY2D + " "
         }
     }
     if (fraseFinale1 != ""){
