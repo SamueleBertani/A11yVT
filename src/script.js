@@ -161,9 +161,11 @@ function setInterestPoints(array) {
         titolo.setAttribute("class", "label")
         if (array[iteratorePunti].description == " ") {
             titolo.innerHTML = iteratorePuntiNonVisibili + 1
+            points[iteratorePunti].numeroParagrafo = iteratorePuntiNonVisibili + 1
         }
         else {
             titolo.innerHTML = iteratorePuntiVisibili + 1
+            points[iteratorePunti].numeroParagrafo = iteratorePuntiVisibili + 1
         }
         div.appendChild(titolo)
         let target = array[iteratorePunti].mapTarget
@@ -286,7 +288,7 @@ function pointUpArrow() {
     if (currentHeight >= maxHeight) {
 
         let text = document.getElementById("change").innerHTML
-        if ((text.slice(0,9)=="Paragrafo")||(text.slice(0,3)=="Alt")||(text=="Sei in cima" + ".")){
+        if ((text.slice(0,9)=="Paragrafo")||(text=="Sei in cima" + ".")){
             document.getElementById("change").innerHTML = "Sei in cima" 
         }
         else {
@@ -318,7 +320,7 @@ function pointDownArrow() {
     if (currentHeight <= minHeight) {
         //così è terribile
         let text = document.getElementById("change").innerHTML
-        if ((text.slice(0,9)=="Paragrafo")||(text.slice(0,3)=="Alt")||(text==("Sei in fondo" + "."))){
+        if ((text.slice(0,9)=="Paragrafo")||(text==("Sei in fondo" + "."))){
             document.getElementById("change").innerHTML = "Sei in fondo" 
         }
         else {
@@ -406,13 +408,13 @@ for (const point of points) {
 
 //OPZIONALMENTE SI POTREBBE NOTIFICARE NON SUL PARAGRAFO NEUTRO MA SUL SINGOLO PUNTO
 function updateChangeDiv(nParagrafo) {
-    //const frase1 = "Paragrafo "
-    const frase2 = "Altezza: "
+    const frase1 = "Paragrafo "
+    const frase2 = " , Altezza: "
 
     let fraseX = points[nParagrafo].height
     let fraseY = points[nParagrafo].width + 1
 
-    let fraseCompleta = frase2 + fraseX + " ore: " + fraseY
+    let fraseCompleta = frase1 + points[nParagrafo].numeroParagrafo + frase2 + fraseX + " ore: " + fraseY
     document.getElementById("change").innerHTML = fraseCompleta
 }
 
