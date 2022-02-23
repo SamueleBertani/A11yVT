@@ -363,16 +363,30 @@ function getMinHeight(array) {
 function showPointInCamera() {
     let cont1 = 0
     let fraseFinale1 = ""
-
+    let fraseX2D = ""
+    let fraseY2D = ""
     for (const point of points) {
         cont1++
         if (Array.from(point.element.classList).includes("readable") == true ){
             const fras1 = "Paragrafo "
             const fras2 = " visibile nell'area"
             const temp = getTranslateXY(point.element)
-            let fraseX2D = temp.translateX > 0 ? " a destra" : (temp.translateX==0) ? " al centro" : " a sinistra"
-            let fraseY2D = temp.translateY > 0 ? " in basso" : (temp.translateY==0) ? " al centro" : " in alto" 
-
+            if ((temp.translateX<=0.1)&&(temp.translateX>=-0.1)&&(temp.translateY<=0.1)&&(temp.translateY>=-0.1)){
+                fraseX2D = " al centro"
+                fraseY2D = " dello schermo" 
+            }
+            else if ((temp.translateX<=0.1)&&(temp.translateX>=-0.1)){
+                fraseX2D = " al centro"
+                fraseY2D = temp.translateY > 0 ? " in basso" : " in alto" 
+            }
+            else if ((temp.translateY<=0.1)&&(temp.translateY>=-0.1)){
+                fraseX2D = temp.translateX > 0 ? " a destra" : " a sinistra"
+                fraseY2D = " al centro"
+            }
+            else {
+                fraseX2D = temp.translateX > 0 ? " a destra" : " a sinistra"
+                fraseY2D = temp.translateY > 0 ? " in basso" : " in alto" 
+            }
             fraseFinale1 += fras1 + points[cont1-1].numeroParagrafo + fras2 + fraseX2D + fraseY2D + " "
         }
     }
