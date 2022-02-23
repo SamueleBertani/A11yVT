@@ -262,8 +262,8 @@ let changingPoint = false
 
 function nextPointArrow() {
     focusedPoint++
-    if (focusedPoint == points.length) {
-        focusedPoint = 0
+    if ((focusedPoint+1) % ore == 0) {
+        focusedPoint -= ore-1 
     }
     updateChangeDiv(focusedPoint)
     changingPoint = true
@@ -271,7 +271,10 @@ function nextPointArrow() {
 function previusPointArrow() {
     focusedPoint--
     if (focusedPoint < 0) {
-        focusedPoint = points.length - 1
+        focusedPoint = ore-1
+    }
+    else if ((focusedPoint+1) % ore == 0){
+        focusedPoint += ore
     }
     updateChangeDiv(focusedPoint)
     changingPoint = true
