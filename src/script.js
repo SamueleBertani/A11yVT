@@ -289,14 +289,7 @@ function pointUpArrow() {
     let currentWidth = points[focusedPoint].width
 
     if (currentHeight >= maxHeight) {
-
-        let text = document.getElementById("change").innerHTML
-        if ((text.slice(0,9)=="Paragrafo")||(text=="Sei in cima" + ".")){
-            document.getElementById("change").innerHTML = "Sei in cima" 
-        }
-        else {
-            document.getElementById("change").innerHTML = text + "."
-        }
+        alert("Sei in cima")
     }
     else {
         focusedPoint = 0
@@ -321,14 +314,7 @@ function pointDownArrow() {
     let minHeight = getMinHeight(points)
     let width = points[focusedPoint].width
     if (currentHeight <= minHeight) {
-        //così è terribile
-        let text = document.getElementById("change").innerHTML
-        if ((text.slice(0,9)=="Paragrafo")||(text==("Sei in fondo" + "."))){
-            document.getElementById("change").innerHTML = "Sei in fondo" 
-        }
-        else {
-            document.getElementById("change").innerHTML = text + "."
-        }
+        alert("Sei in fondo")
     }
     else {
         focusedPoint = 0
