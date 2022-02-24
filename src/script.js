@@ -289,7 +289,19 @@ function pointUpArrow() {
     let currentWidth = points[focusedPoint].width
 
     if (currentHeight >= maxHeight) {
-        alert("Sei in cima")
+        if (!document.getElementById('minMax')){
+            let para = document.createElement('p')
+            para.innerHTML = "Sei in cima"
+            para.setAttribute('id', 'minMax')
+            para.setAttribute('role', 'alert')
+            para.setAttribute('aria-live', 'polite')
+            let body = document.getElementsByTagName('body')[0]
+            body.appendChild(para)
+            setTimeout(() => {
+                para.remove()
+            }, 1);
+
+        }
     }
     else {
         focusedPoint = 0
@@ -314,7 +326,20 @@ function pointDownArrow() {
     let minHeight = getMinHeight(points)
     let width = points[focusedPoint].width
     if (currentHeight <= minHeight) {
-        alert("Sei in fondo")
+        if (!document.getElementById('minMax')){
+            let para = document.createElement('p')
+            para.innerHTML = "Sei in fondo"
+            para.setAttribute('id', 'minMax')
+            para.setAttribute('class', 'sr-only')
+            para.setAttribute('role', 'alert')
+            para.setAttribute('aria-live', 'polite')
+            let body = document.getElementsByTagName('body')[0]
+            body.appendChild(para)
+            setTimeout(() => {
+                para.remove()
+            }, 1);
+
+        }
     }
     else {
         focusedPoint = 0
