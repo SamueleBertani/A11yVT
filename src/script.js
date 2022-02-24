@@ -299,7 +299,7 @@ function pointUpArrow() {
             body.appendChild(para)
             setTimeout(() => {
                 para.remove()
-            }, 1);
+            }, 100);
 
         }
     }
@@ -337,7 +337,7 @@ function pointDownArrow() {
             body.appendChild(para)
             setTimeout(() => {
                 para.remove()
-            }, 1);
+            }, 100);
 
         }
     }
@@ -406,6 +406,9 @@ function showPointInCamera() {
     }
     if (fraseFinale1 != ""){
         document.getElementById("change").innerHTML = fraseFinale1
+        setTimeout(() => {
+            document.getElementById("change").innerHTML = ""
+        }, 100);
     }
 
 }
@@ -446,6 +449,9 @@ function updateChangeDiv(nParagrafo) {
         fraseCompleta += " " + points[nParagrafo].description
     }
     document.getElementById("change").innerHTML = fraseCompleta
+    setTimeout(() => {
+        document.getElementById("change").innerHTML = ""
+    }, 100);
 }
 
 function resetCameraToNord() {
