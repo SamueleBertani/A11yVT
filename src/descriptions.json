@@ -1,0 +1,83 @@
+[
+    {
+        "id": "esterno1",
+        "map": {
+            "px": "/textures/environmentMaps/esterno1/px.jpg",
+            "nx": "/textures/environmentMaps/esterno1/nx.jpg",
+            "py": "/textures/environmentMaps/esterno1/py.jpg",
+            "ny": "/textures/environmentMaps/esterno1/ny.jpg",
+            "pz": "/textures/environmentMaps/esterno1/pz.jpg",
+            "nz": "/textures/environmentMaps/esterno1/nz.jpg"
+        },
+        "punti": [
+            {"link": false, "altezza": 0, "larghezza": 4, "descr": "è presente un attraversamento pedonabile gestito da semaforo prenotabile da pulsante","idTarget":""},
+            {"link": true, "altezza": 0, "larghezza": 7, "descr": "Attraverso questo ingresso si enta al piano terra del campus","idTarget":"ingresso1"},
+            {"link": false, "altezza": 1, "larghezza": 10, "descr": "Oltre alla strada è presente la nuova sede del campus","idTarget":""}
+        ]
+    },
+    {
+        "id": "ingresso1",
+        "map": {
+            "px": "/textures/environmentMaps/ingresso1/px.jpg",
+            "nx": "/textures/environmentMaps/ingresso1/nx.jpg",
+            "py": "/textures/environmentMaps/ingresso1/py.jpg",
+            "ny": "/textures/environmentMaps/ingresso1/ny.jpg",
+            "pz": "/textures/environmentMaps/ingresso1/pz.jpg",
+            "nz": "/textures/environmentMaps/ingresso1/nz.jpg"
+        },
+        "punti": [
+            {"link": false, "altezza": 0, "larghezza": 1, "descr": "Sede della associazione studentesca Sprite, maggiori informazioni a: prite.csr.unibo.it", "idTarget":""},
+            {"link": true, "altezza": 0, "larghezza": 4, "descr": "Uscita per ritornare nello spiazzo esterno","idTarget":"esterno1"},
+            {"link": false, "altezza": 0, "larghezza": 10, "descr": "è attivo un help desk a cui chiedere informazioni ed assistenza","idTarget":""},
+            {"link": true, "altezza": 0, "larghezza": 8, "descr": "Si accede al corridoio che porta ai laboratori e aule di Informatica del piano terra","idTarget":"corridoio1"}
+            
+        ]
+    },
+    {
+        "id": "corridoio1",
+        "map": {
+            "px": "/textures/environmentMaps/corridoio1/px.jpg",
+            "nx": "/textures/environmentMaps/corridoio1/nx.jpg",
+            "py": "/textures/environmentMaps/corridoio1/py.jpg",
+            "ny": "/textures/environmentMaps/corridoio1/ny.jpg",
+            "pz": "/textures/environmentMaps/corridoio1/pz.jpg",
+            "nz": "/textures/environmentMaps/corridoio1/nz.jpg"
+        },
+        "punti": [
+            {"link": true, "altezza": 0, "larghezza": 12, "descr": "Laboratorio 2.2", "idTarget":"aula1"},
+            {"link": true, "altezza": 0, "larghezza": 2, "descr": "Aula 2.3","idTarget":"aula2"},
+            {"link": false, "altezza": 0, "larghezza": 9, "descr": "Macchinete dove è possibile acquistare snack, bevande, spremute fresche e caffè","idTarget":""},
+            {"link": false, "altezza": -1, "larghezza": 4, "descr": "Stampante utilizzabile da studenti","idTarget":""}
+        ]
+    },
+    {
+        "id": "aula1",
+        "map": {
+            "px": "/textures/environmentMaps/aula1/px.jpg",
+            "nx": "/textures/environmentMaps/aula1/nx.jpg",
+            "py": "/textures/environmentMaps/aula1/py.jpg",
+            "ny": "/textures/environmentMaps/aula1/ny.jpg",
+            "pz": "/textures/environmentMaps/aula1/pz.jpg",
+            "nz": "/textures/environmentMaps/aula1/nz.jpg"
+        },
+        "punti": [
+            {"link": true, "altezza": 0, "larghezza": 9, "descr": "Ritorna al corridoio","idTarget":"corridoio1"},
+            {"link": false, "altezza": -1, "larghezza": 5, "descr": "L'aula presenta cento postazioni utilizzabili con Pc, schermo, tastiera e mouse","idTarget":""}
+        ]
+    },
+    {
+        "id": "aula2",
+        "map": {
+            "px": "/textures/environmentMaps/aula2/px.jpg",
+            "nx": "/textures/environmentMaps/aula2/nx.jpg",
+            "py": "/textures/environmentMaps/aula2/py.jpg",
+            "ny": "/textures/environmentMaps/aula2/ny.jpg",
+            "pz": "/textures/environmentMaps/aula2/pz.jpg",
+            "nz": "/textures/environmentMaps/aula2/nz.jpg"
+        },
+        "punti": [
+            {"link": true, "altezza": 0, "larghezza": 4, "descr": "Ritorna al corridoio","idTarget":"corridoio1"},
+            {"link": false, "altezza": 0, "larghezza": 3, "descr": "L'aula è provvista di un computer connesso ad un proiettore e a hardware esterno","idTarget":""}
+        ]
+    }
+]
